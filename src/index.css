@@ -1,6 +1,32 @@
 @import "tailwindcss";
 @import "@fontsource-variable/geist/wght.css";
+@import "@fontsource-variable/geist-mono/wght.css";
+@import "@fontsource/jetbrains-mono/400.css";
+
+@theme {
+  --font-sans: "Geist Variable", sans-serif;
+  --font-mono: "Geist Mono Variable", monospace;
+  --font-py: "JetBrains Mono", monospace;
+
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --color-plum: #7b2d74;
+  --color-accent: #a85ca1;
+}
+
+:root {
+  --foreground: oklch(0.145 0 0);
+  --background: oklch(1 0 0);
+}
+
+.dark {
+  --foreground: oklch(1 0 0);
+  --background: oklch(0.145 0 0);
+}
 
 body {
+  margin: 0;
   font-family: "Geist Variable", sans-serif;
+  color: var(--foreground);
+  background-color: var(--background);
 }

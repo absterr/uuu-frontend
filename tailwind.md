@@ -37,3 +37,4 @@
   - `px-4 md:px-8`
   - `py-6 md:py-10`
 - Apply the same base-then-variant ordering logic to all variants, not just responsive breakpoints (e.g. `hover:`, `dark:`).
+- Use the `cn` utility to combine classes conditionally.

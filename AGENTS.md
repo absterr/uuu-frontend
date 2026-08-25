@@ -32,8 +32,9 @@
 ## Coding Conventions
 
 - Prefer functional programming; avoid mutating globals.
-- File names must use **kebab-case**.
+- File names must use **kebab-case**, except for component files which use **PascalCase**.
 - Run `bun run lint` before considering a change complete. Biome is the source of truth for style.
+- Use default exports for components
 
 ## Component structure, UI & accessibility
 
