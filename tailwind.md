@@ -38,3 +38,4 @@
   - `py-6 md:py-10`
 - Apply the same base-then-variant ordering logic to all variants, not just responsive breakpoints (e.g. `hover:`, `dark:`).
 - Use the `cn` utility to combine classes conditionally.
+- For readability, split all classNames past 80 characters per line with backticks ie `className={`text-sm md:text-base`}`.
