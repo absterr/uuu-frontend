@@ -1,97 +1,60 @@
-import APIKeysSection from "@/components/api-keys/APIKeysSection";
+import APIKeyRow from "@/components/api-keys/APIKeyRows";
+import { MOCK_API_KEYS } from "@/lib/mock-data/api-keys";
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const Route = createFileRoute("/api-keys")({
   component: ApiKeysPage,
 });
 
-const MOCK_API_KEYS = [
-  {
-    id: "key-1",
-    name: "Production",
-    key: "uuu_live_••••••••••••7f21",
-    created: "Aug 12, 2026",
-    status: "Active",
-  },
-  {
-    id: "key-2",
-    name: "Development",
-    key: "uuu_test_••••••••••••91ac",
-    created: "Aug 18, 2026",
-    status: "Revoked",
-  },
-];
-
 function ApiKeysPage() {
+  const [keys, setKeys] = useState(MOCK_API_KEYS);
+
+  function revoke(id: number) {
+    setKeys((current) =>
+      current.map((apiKey) =>
+        apiKey.id === id ? { ...apiKey, status: "REVOKED" } : apiKey
+      )
+    );
+  }
+
   return (
     <main className="min-h-screen bg-background px-4 py-8 text-foreground md:px-6 md:py-10">
       <div className="mx-auto flex w-full max-w-7xl flex-col">
         <header className="border-b border-foreground/10 pb-4">
-          <h1 className="text-sm font-medium text-foreground/60">API keys</h1>
+          <h1 className="text-sm font-medium text-foreground/60">API Keys</h1>
         </header>
 
-        <div className="flex w-full max-w-3xl flex-col py-8">
-          <APIKeysSection
-            title="Create API key"
-            description="Generate a key for accessing the UUU API."
-          >
-            <div className="flex gap-3">
-              <input
-                type="text"
-                placeholder="Key name"
-                className="min-w-0 flex-1 border border-foreground/15 bg-foreground/5 px-3 py-2 text-sm outline-none focus:border-accent"
-              />
+        <div className="flex flex-col w-full max-w-3xl py-8">
+          <section className="flex flex-col gap-y-6">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <h2 className="text-sm font-medium text-foreground">
+                  API keys
+                </h2>
+                <p className="pt-1 text-xs text-foreground/50">
+                  Manage keys used to access your account.
+                </p>
+              </div>
+
               <button
                 type="button"
-                className="cursor-pointer bg-plum px-3 py-2 text-xs font-medium text-background hover:bg-plum/90"
+                className="shrink-0 cursor-pointer bg-plum px-3 py-2 text-xs font-medium text-background hover:bg-plum/90"
               >
                 Create key
               </button>
             </div>
-          </APIKeysSection>
 
-          <APIKeysSection
-            title="Your API keys"
-            description="Manage keys associated with your account."
-          >
-            <ul className="divide-y divide-foreground/10">
-              {MOCK_API_KEYS.map((apiKey) => (
-                <li
+            <div>
+              {keys.map((apiKey) => (
+                <APIKeyRow
                   key={apiKey.id}
-                  className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between"
-                >
-                  <div className="flex min-w-0 flex-col gap-1">
-                    <span className="text-sm text-foreground">
-                      {apiKey.name}
-                    </span>
-                    <span className="truncate font-mono text-[10px] text-foreground/40">
-                      {apiKey.key}
-                    </span>
-                    <span className="text-xs text-foreground/40">
-                      Created {apiKey.created} · {apiKey.status}
-                    </span>
-                  </div>
-
-                  <div className="flex shrink-0 gap-3">
-                    {apiKey.status === "Active" && (
-                      <button
-                        type="button"
-                        className="cursor-pointer text-xs text-foreground/50 hover:text-plum"
-                      >
-                        Revoke
-                      </button>
-                    )}
-                    <button
-                      type="button"
-                      className="cursor-pointer text-xs text-foreground/50 hover:text-plum"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </li>
+                  apiKey={apiKey}
+                  onRevoke={() => revoke(apiKey.id)}
+                />
               ))}
-            </ul>
-          </APIKeysSection>
+            </div>
+          </section>
         </div>
       </div>
     </main>
