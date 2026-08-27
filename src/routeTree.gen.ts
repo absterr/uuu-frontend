@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnalyseRouteImport } from './routes/analyse'
+import { Route as ApiKeysRouteImport } from './routes/api-keys'
 import { Route as ComplianceRouteImport } from './routes/compliance'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as NotificationsRouteImport } from './routes/notifications'
@@ -26,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const AnalyseRoute = AnalyseRouteImport.update({
   id: '/analyse',
   path: '/analyse',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiKeysRoute = ApiKeysRouteImport.update({
+  id: '/api-keys',
+  path: '/api-keys',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComplianceRoute = ComplianceRouteImport.update({
@@ -62,6 +68,7 @@ const TeamsRoute = TeamsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analyse': typeof AnalyseRoute
+  '/api-keys': typeof ApiKeysRoute
   '/compliance': typeof ComplianceRoute
   '/history': typeof HistoryRoute
   '/notifications': typeof NotificationsRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analyse': typeof AnalyseRoute
+  '/api-keys': typeof ApiKeysRoute
   '/compliance': typeof ComplianceRoute
   '/history': typeof HistoryRoute
   '/notifications': typeof NotificationsRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/analyse': typeof AnalyseRoute
+  '/api-keys': typeof ApiKeysRoute
   '/compliance': typeof ComplianceRoute
   '/history': typeof HistoryRoute
   '/notifications': typeof NotificationsRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/analyse'
+    | '/api-keys'
     | '/compliance'
     | '/history'
     | '/notifications'
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/analyse'
+    | '/api-keys'
     | '/compliance'
     | '/history'
     | '/notifications'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/analyse'
+    | '/api-keys'
     | '/compliance'
     | '/history'
     | '/notifications'
@@ -126,6 +138,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyseRoute: typeof AnalyseRoute
+  ApiKeysRoute: typeof ApiKeysRoute
   ComplianceRoute: typeof ComplianceRoute
   HistoryRoute: typeof HistoryRoute
   NotificationsRoute: typeof NotificationsRoute
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/analyse'
       fullPath: '/analyse'
       preLoaderRoute: typeof AnalyseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api-keys': {
+      id: '/api-keys'
+      path: '/api-keys'
+      fullPath: '/api-keys'
+      preLoaderRoute: typeof ApiKeysRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compliance': {
@@ -198,6 +218,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyseRoute: AnalyseRoute,
+  ApiKeysRoute: ApiKeysRoute,
   ComplianceRoute: ComplianceRoute,
   HistoryRoute: HistoryRoute,
   NotificationsRoute: NotificationsRoute,
