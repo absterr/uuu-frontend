@@ -13,8 +13,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnalyseRouteImport } from './routes/analyse'
 import { Route as ComplianceRouteImport } from './routes/compliance'
 import { Route as HistoryRouteImport } from './routes/history'
+import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RiskScoreRouteImport } from './routes/risk-score'
+import { Route as TeamsRouteImport } from './routes/teams'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -36,6 +38,11 @@ const HistoryRoute = HistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -46,22 +53,31 @@ const RiskScoreRoute = RiskScoreRouteImport.update({
   path: '/risk-score',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TeamsRoute = TeamsRouteImport.update({
+  id: '/teams',
+  path: '/teams',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analyse': typeof AnalyseRoute
   '/compliance': typeof ComplianceRoute
   '/history': typeof HistoryRoute
+  '/notifications': typeof NotificationsRoute
   '/profile': typeof ProfileRoute
   '/risk-score': typeof RiskScoreRoute
+  '/teams': typeof TeamsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analyse': typeof AnalyseRoute
   '/compliance': typeof ComplianceRoute
   '/history': typeof HistoryRoute
+  '/notifications': typeof NotificationsRoute
   '/profile': typeof ProfileRoute
   '/risk-score': typeof RiskScoreRoute
+  '/teams': typeof TeamsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -69,23 +85,42 @@ export interface FileRoutesById {
   '/analyse': typeof AnalyseRoute
   '/compliance': typeof ComplianceRoute
   '/history': typeof HistoryRoute
+  '/notifications': typeof NotificationsRoute
   '/profile': typeof ProfileRoute
   '/risk-score': typeof RiskScoreRoute
+  '/teams': typeof TeamsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/analyse' | '/compliance' | '/history' | '/profile' | '/risk-score'
+    | '/'
+    | '/analyse'
+    | '/compliance'
+    | '/history'
+    | '/notifications'
+    | '/profile'
+    | '/risk-score'
+    | '/teams'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analyse' | '/compliance' | '/history' | '/profile' | '/risk-score'
+  to:
+    | '/'
+    | '/analyse'
+    | '/compliance'
+    | '/history'
+    | '/notifications'
+    | '/profile'
+    | '/risk-score'
+    | '/teams'
   id:
     | '__root__'
     | '/'
     | '/analyse'
     | '/compliance'
     | '/history'
+    | '/notifications'
     | '/profile'
     | '/risk-score'
+    | '/teams'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -93,8 +128,10 @@ export interface RootRouteChildren {
   AnalyseRoute: typeof AnalyseRoute
   ComplianceRoute: typeof ComplianceRoute
   HistoryRoute: typeof HistoryRoute
+  NotificationsRoute: typeof NotificationsRoute
   ProfileRoute: typeof ProfileRoute
   RiskScoreRoute: typeof RiskScoreRoute
+  TeamsRoute: typeof TeamsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -127,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -141,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RiskScoreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/teams': {
+      id: '/teams'
+      path: '/teams'
+      fullPath: '/teams'
+      preLoaderRoute: typeof TeamsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -149,8 +200,10 @@ const rootRouteChildren: RootRouteChildren = {
   AnalyseRoute: AnalyseRoute,
   ComplianceRoute: ComplianceRoute,
   HistoryRoute: HistoryRoute,
+  NotificationsRoute: NotificationsRoute,
   ProfileRoute: ProfileRoute,
   RiskScoreRoute: RiskScoreRoute,
+  TeamsRoute: TeamsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

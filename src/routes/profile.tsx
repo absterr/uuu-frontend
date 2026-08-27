@@ -1,6 +1,13 @@
 import ProfileSection from "@/components/profile/ProfileSection";
-import { MOCK_PROFILE } from "@/lib/mock-data/profile";
 import { createFileRoute } from "@tanstack/react-router";
+
+const MOCK_PROFILE = {
+  id: 1,
+  email: "demo@uuu.dev",
+  name: "Demo User",
+  plan: "Professional",
+  created_at: "2026-07-14T10:30:00Z",
+};
 
 export const Route = createFileRoute("/profile")({
   component: ProfilePage,
