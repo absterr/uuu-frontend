@@ -1,4 +1,4 @@
-import type { BulkFile } from "@/lib/mock-analysis";
+import type { BulkFile } from "@/lib/mock-data/analysis";
 
 interface Props {
   value: string | BulkFile[];

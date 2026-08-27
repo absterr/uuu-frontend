@@ -11,7 +11,7 @@ import {
   MOCK_BULK_RESULTS,
   MOCK_SINGLE_CODE,
   MOCK_SINGLE_RESULT,
-} from "@/lib/mock-analysis";
+} from "@/lib/mock-data/analysis";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
