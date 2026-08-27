@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnalyseRouteImport } from './routes/analyse'
 import { Route as ComplianceRouteImport } from './routes/compliance'
 import { Route as HistoryRouteImport } from './routes/history'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RiskScoreRouteImport } from './routes/risk-score'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,11 @@ const HistoryRoute = HistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RiskScoreRoute = RiskScoreRouteImport.update({
   id: '/risk-score',
   path: '/risk-score',
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/analyse': typeof AnalyseRoute
   '/compliance': typeof ComplianceRoute
   '/history': typeof HistoryRoute
+  '/profile': typeof ProfileRoute
   '/risk-score': typeof RiskScoreRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/analyse': typeof AnalyseRoute
   '/compliance': typeof ComplianceRoute
   '/history': typeof HistoryRoute
+  '/profile': typeof ProfileRoute
   '/risk-score': typeof RiskScoreRoute
 }
 export interface FileRoutesById {
@@ -61,14 +69,23 @@ export interface FileRoutesById {
   '/analyse': typeof AnalyseRoute
   '/compliance': typeof ComplianceRoute
   '/history': typeof HistoryRoute
+  '/profile': typeof ProfileRoute
   '/risk-score': typeof RiskScoreRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analyse' | '/compliance' | '/history' | '/risk-score'
+  fullPaths:
+    '/' | '/analyse' | '/compliance' | '/history' | '/profile' | '/risk-score'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analyse' | '/compliance' | '/history' | '/risk-score'
-  id: '__root__' | '/' | '/analyse' | '/compliance' | '/history' | '/risk-score'
+  to: '/' | '/analyse' | '/compliance' | '/history' | '/profile' | '/risk-score'
+  id:
+    | '__root__'
+    | '/'
+    | '/analyse'
+    | '/compliance'
+    | '/history'
+    | '/profile'
+    | '/risk-score'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +93,7 @@ export interface RootRouteChildren {
   AnalyseRoute: typeof AnalyseRoute
   ComplianceRoute: typeof ComplianceRoute
   HistoryRoute: typeof HistoryRoute
+  ProfileRoute: typeof ProfileRoute
   RiskScoreRoute: typeof RiskScoreRoute
 }
 
@@ -109,6 +127,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/risk-score': {
       id: '/risk-score'
       path: '/risk-score'
@@ -124,6 +149,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnalyseRoute: AnalyseRoute,
   ComplianceRoute: ComplianceRoute,
   HistoryRoute: HistoryRoute,
+  ProfileRoute: ProfileRoute,
   RiskScoreRoute: RiskScoreRoute,
 }
 export const routeTree = rootRouteImport
