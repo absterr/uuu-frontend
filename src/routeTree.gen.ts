@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnalyseRouteImport } from './routes/analyse'
 import { Route as HistoryRouteImport } from './routes/history'
+import { Route as RiskScoreRouteImport } from './routes/risk-score'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const HistoryRoute = HistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RiskScoreRoute = RiskScoreRouteImport.update({
+  id: '/risk-score',
+  path: '/risk-score',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analyse': typeof AnalyseRoute
   '/history': typeof HistoryRoute
+  '/risk-score': typeof RiskScoreRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analyse': typeof AnalyseRoute
   '/history': typeof HistoryRoute
+  '/risk-score': typeof RiskScoreRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/analyse': typeof AnalyseRoute
   '/history': typeof HistoryRoute
+  '/risk-score': typeof RiskScoreRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analyse' | '/history'
+  fullPaths: '/' | '/analyse' | '/history' | '/risk-score'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analyse' | '/history'
-  id: '__root__' | '/' | '/analyse' | '/history'
+  to: '/' | '/analyse' | '/history' | '/risk-score'
+  id: '__root__' | '/' | '/analyse' | '/history' | '/risk-score'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyseRoute: typeof AnalyseRoute
   HistoryRoute: typeof HistoryRoute
+  RiskScoreRoute: typeof RiskScoreRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/risk-score': {
+      id: '/risk-score'
+      path: '/risk-score'
+      fullPath: '/risk-score'
+      preLoaderRoute: typeof RiskScoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyseRoute: AnalyseRoute,
   HistoryRoute: HistoryRoute,
+  RiskScoreRoute: RiskScoreRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
