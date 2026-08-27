@@ -1,79 +1,98 @@
-import TeamSection from "@/components/teams/TeamSection";
+import { useState } from "react";
+import TeamMembers from "@/components/teams/TeamMembers";
+import { MOCK_TEAMS } from "@/lib/mock-data/teams";
 import { createFileRoute } from "@tanstack/react-router";
-
-const MOCK_TEAMS = [
-  {
-    id: "team-1",
-    name: "Engineering",
-    members: 4,
-  },
-  {
-    id: "team-2",
-    name: "Legacy Systems",
-    members: 7,
-  },
-];
 
 export const Route = createFileRoute("/teams")({
   component: TeamsPage,
 });
 
 function TeamsPage() {
+  const [selectedId, setSelectedId] = useState(MOCK_TEAMS[0]?.id ?? null);
+
+  const team = MOCK_TEAMS.find((item) => item.id === selectedId) ?? null;
+
   return (
     <main className="min-h-screen bg-background px-4 py-8 text-foreground md:px-6 md:py-10">
       <div className="mx-auto flex w-full max-w-7xl flex-col">
         <header className="border-b border-foreground/10 pb-4">
-          <h1 className="text-sm font-medium text-foreground/60">Teams</h1>
-        </header>
+          <div className="flex flex-col gap-1">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-foreground/40">
+              Teams
+            </span>
+            <div className="flex items-center justify-between max-w-3xl">
+              <div className="flex items-center gap-2">
+                <select
+                  value={selectedId ?? ""}
+                  onChange={(e) => setSelectedId(Number(e.target.value))}
+                  className="bg-transparent text-sm font-medium text-foreground outline-none"
+                >
+                  {MOCK_TEAMS.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
 
-        <div className="flex w-full max-w-3xl flex-col py-8">
-          <TeamSection
-            title="Create team"
-            description="Create a team to collaborate on analyses."
-          >
-            <div className="flex gap-3">
-              <input
-                type="text"
-                placeholder="Team name"
-                className="min-w-0 flex-1 border border-foreground/15 bg-foreground/5 px-3 py-2 text-sm outline-none focus:border-accent"
-              />
+                <span className="text-xs text-foreground/30">
+                  {team?.total_members ?? 0} members
+                </span>
+              </div>
+
               <button
                 type="button"
-                className="cursor-pointer bg-plum px-3 py-2 text-xs font-medium text-background hover:bg-plum/90"
+                className="w-fit cursor-pointer text-xs text-foreground/40 hover:text-plum"
               >
-                Create
+                + New team
               </button>
             </div>
-          </TeamSection>
+          </div>
+        </header>
 
-          <TeamSection
-            title="Your teams"
-            description="Teams you currently belong to."
-          >
-            <ul className="divide-y divide-foreground/10">
-              {MOCK_TEAMS.map((team) => (
-                <li
-                  key={team.id}
-                  className="flex items-center justify-between gap-4 py-4"
+        {team ? (
+          <div className="flex w-full max-w-3xl flex-col">
+            <section className="flex flex-col gap-4 border-b border-foreground/10 py-8">
+              <div className="flex flex-col gap-1">
+                <h2 className="text-sm font-medium text-foreground">
+                  Invite members
+                </h2>
+                <p className="text-xs text-foreground/50">
+                  Add people to this team.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  className="min-w-0 flex-1 border border-foreground/15 bg-foreground/5 px-3 py-2 text-xs text-foreground outline-none focus:border-accent"
+                />
+
+                <button
+                  type="button"
+                  className="cursor-pointer bg-plum px-4 py-2 text-xs font-medium text-background hover:bg-plum/90"
                 >
-                  <div className="flex flex-col gap-1">
-                    <span className="text-sm text-foreground">{team.name}</span>
-                    <span className="text-xs text-foreground/50">
-                      {team.members} members
-                    </span>
-                  </div>
+                  Invite
+                </button>
+              </div>
+            </section>
 
-                  <button
-                    type="button"
-                    className="cursor-pointer text-xs text-foreground/50 hover:text-plum"
-                  >
-                    View team →
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </TeamSection>
-        </div>
+            <section className="flex flex-col gap-4 py-8">
+              <div className="flex flex-col gap-1">
+                <h2 className="text-sm font-medium text-foreground">Members</h2>
+                <p className="text-xs text-foreground/50">
+                  People with access to this team's analyses.
+                </p>
+              </div>
+
+              <TeamMembers members={team.members} />
+            </section>
+          </div>
+        ) : (
+          <div className="flex min-h-40 items-center justify-center text-xs text-foreground/40">
+            No team selected.
+          </div>
+        )}
       </div>
     </main>
   );
