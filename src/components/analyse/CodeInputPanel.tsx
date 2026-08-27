@@ -23,7 +23,7 @@ export default function CodeInputPanel({
           filename: f.name,
           lines: (await f.text()).split("\n").length,
           content: await f.text(),
-        }))
+        })),
       ).then((newFiles) => onChange([...value, ...newFiles]));
     } else {
       const file = fileList[0];
@@ -73,7 +73,7 @@ export default function CodeInputPanel({
       <div className="flex min-h-0 w-full flex-1 flex-col p-4 md:p-6">
         {isBulk ? (
           <div className="flex flex-1 flex-col gap-4">
-            <div
+            <label
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {
                 e.preventDefault();
@@ -83,19 +83,19 @@ export default function CodeInputPanel({
               className="flex flex-col items-center justify-center gap-2 border border-dashed border-foreground/15 bg-foreground/5 p-6 text-center"
             >
               <p className="text-sm text-foreground/60">Drag files here, or</p>
-              <label className="cursor-pointer border border-foreground/15 px-3 py-1.5 text-xs font-medium text-foreground/70 hover:border-accent hover:text-plum">
+              <span className="cursor-pointer border border-foreground/15 px-3 py-1.5 text-xs font-medium text-foreground/70 hover:border-accent hover:text-plum">
                 Browse files
-                <input
-                  type="file"
-                  multiple
-                  accept=".cbl,.cob,.txt"
-                  onChange={(e) =>
-                    e.target.files?.length && handleFiles(e.target.files)
-                  }
-                  className="sr-only"
-                />
-              </label>
-            </div>
+              </span>
+              <input
+                type="file"
+                multiple
+                accept=".cbl,.cob,.txt"
+                onChange={(e) =>
+                  e.target.files?.length && handleFiles(e.target.files)
+                }
+                className="sr-only"
+              />
+            </label>
             <ul className="flex-1 divide-y divide-foreground/10 overflow-y-auto border-t border-foreground/10">
               {value.map((f) => (
                 <li

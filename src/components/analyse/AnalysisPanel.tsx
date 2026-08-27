@@ -1,7 +1,7 @@
-import type { AnalyzeResponse } from "@/lib/analyse-code";
-import type { BulkResultItem } from "@/lib/mock-data/analysis";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import type { AnalyzeResponse } from "@/lib/analyse-code";
+import type { BulkResultItem } from "@/lib/mock-data/analysis";
 import RiskBadge from "../RiskBadge";
 
 interface Props {

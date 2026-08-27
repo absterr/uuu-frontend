@@ -1,7 +1,7 @@
+import { createFileRoute } from "@tanstack/react-router";
 import RiskBreakdown from "@/components/risk-score/RiskBreakdown";
 import RiskOverview from "@/components/risk-score/RiskOverview";
 import { MOCK_RISK_SCORE } from "@/lib/mock-data/risk-score";
-import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/risk-score")({
   component: RiskScorePage,

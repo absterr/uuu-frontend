@@ -100,6 +100,14 @@ export default function ComplianceDetail({ report }: Props) {
             </div>
           )}
 
+          <button
+            type="button"
+            className={`w-full border border-foreground/15 px-3 py-2 text-xs font-medium
+              text-foreground/70 hover:border-accent hover:text-plum cursor-pointer`}
+          >
+            Download PDF report ↗
+          </button>
+
           <div className="flex flex-col gap-1 border-t border-foreground/10 pt-4 text-[10px] uppercase tracking-wider text-foreground/40">
             <span>Analysis #{report.analysis_id}</span>
             <span>Reviewed by {report.reviewed_by}</span>

@@ -26,6 +26,14 @@
       }
     }
   },
+  "css": {
+    "formatter": {
+      "quoteStyle": "double"
+    },
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
   "javascript": {
     "formatter": {
       "quoteStyle": "double"

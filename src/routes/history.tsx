@@ -1,10 +1,10 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import HistoryDetail from "@/components/history/HistoryDetails";
 import HistoryFilters from "@/components/history/HistoryFilter";
 import HistoryList from "@/components/history/HistoryList";
 import type { RiskLevel } from "@/lib/analyse-code";
 import { MOCK_HISTORY } from "@/lib/mock-data/history";
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 
 export const Route = createFileRoute("/history")({
   component: HistoryPage,
@@ -14,7 +14,7 @@ function HistoryPage() {
   const [search, setSearch] = useState("");
   const [risk, setRisk] = useState<RiskLevel | "">("");
   const [selectedId, setSelectedId] = useState<number | null>(
-    MOCK_HISTORY[0]?.id ?? null
+    MOCK_HISTORY[0]?.id ?? null,
   );
 
   const items = MOCK_HISTORY.filter((item) => {
