@@ -17,7 +17,7 @@ export default function RiskBadge({ level }: RiskBadgeProps) {
     <span
       className={`inline-flex items-center gap-2 border border-current/15 px-2.5 py-1 text-[10px] font-medium uppercase tracking-widest ${RISK_STYLES[level]}`}
     >
-      <span className="size-1.5 bg-current" aria-hidden="true" />
+      <span className="size-1.5 bg-current rounded-full" aria-hidden="true" />
       {label} risk
     </span>
   );
