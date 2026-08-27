@@ -1,4 +1,4 @@
-import NotificationSection from "@/components/notifications/NotificationSection";
+import NotificationRow from "@/components/notifications/NotificationRow";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -6,17 +6,22 @@ export const Route = createFileRoute("/notifications")({
   component: NotificationsPage,
 });
 
-const MOCK_NOTIFICATION_PREFERENCES = {
-  email_analysis: true,
-  email_risk: true,
-  email_team: false,
-  inapp_analysis: true,
-  inapp_risk: true,
-  inapp_team: true,
+const MOCK_NOTIFICATION_PREFS = {
+  email_high_risk: true,
+  email_bulk_done: true,
+  email_limit_warning: false,
+  email_team_joined: true,
+  inapp_high_risk: true,
+  inapp_bulk_done: true,
+  inapp_limit_warning: true,
+  inapp_team_joined: false,
 };
 
 function NotificationsPage() {
-  const [preferences, setPreferences] = useState(MOCK_NOTIFICATION_PREFERENCES);
+  const [prefs, setPrefs] = useState(MOCK_NOTIFICATION_PREFS);
+
+  const flip = (key: keyof typeof prefs) =>
+    setPrefs((current) => ({ ...current, [key]: !current[key] }));
 
   return (
     <main className="min-h-screen bg-background px-4 py-8 text-foreground md:px-6 md:py-10">
@@ -27,123 +32,73 @@ function NotificationsPage() {
           </h1>
         </header>
 
-        <div className="flex w-full max-w-3xl flex-col py-8">
-          <NotificationSection
-            title="Analysis"
-            description="Choose how you receive analysis updates."
-          >
-            <div className="flex flex-col">
-              {[
-                [
-                  "email_analysis",
-                  "Email",
-                  "Receive analysis notifications by email.",
-                ],
-                [
-                  "inapp_analysis",
-                  "In-app",
-                  "Receive analysis notifications in the app.",
-                ],
-              ].map(([key, label, description]) => (
-                <label
-                  key={key}
-                  className="flex cursor-pointer items-center justify-between gap-4 border-b border-foreground/10 py-4 last:border-0"
-                >
-                  <span className="flex flex-col gap-1">
-                    <span className="text-sm text-foreground">{label}</span>
-                    <span className="text-xs text-foreground/50">
-                      {description}
-                    </span>
-                  </span>
-                  <input
-                    type="checkbox"
-                    checked={preferences[key as keyof typeof preferences]}
-                    onChange={(e) =>
-                      setPreferences({
-                        ...preferences,
-                        [key]: e.target.checked,
-                      })
-                    }
-                    className="size-4 accent-accent"
-                  />
-                </label>
-              ))}
-            </div>
-          </NotificationSection>
+        <div className="flex w-full max-w-3xl flex-col gap-10 py-8">
+          <div>
+            <h2 className="text-sm font-medium text-foreground">
+              Notification preferences
+            </h2>
+            <p className="mt-1 text-xs text-foreground/50">
+              Choose what you're notified about, and how.
+            </p>
+          </div>
 
-          <NotificationSection
-            title="Risk alerts"
-            description="Stay informed about risk-related events."
-          >
-            <div className="flex flex-col">
-              {[
-                ["email_risk", "Email", "Receive risk alerts by email."],
-                ["inapp_risk", "In-app", "Receive risk alerts in the app."],
-              ].map(([key, label, description]) => (
-                <label
-                  key={key}
-                  className="flex cursor-pointer items-center justify-between gap-4 border-b border-foreground/10 py-4 last:border-0"
-                >
-                  <span className="flex flex-col gap-1">
-                    <span className="text-sm text-foreground">{label}</span>
-                    <span className="text-xs text-foreground/50">
-                      {description}
-                    </span>
-                  </span>
-                  <input
-                    type="checkbox"
-                    checked={preferences[key as keyof typeof preferences]}
-                    onChange={(e) =>
-                      setPreferences({
-                        ...preferences,
-                        [key]: e.target.checked,
-                      })
-                    }
-                    className="size-4 accent-accent"
-                  />
-                </label>
-              ))}
+          <section>
+            <h3 className="font-mono text-[10px] font-semibold uppercase tracking-wider text-foreground/40">
+              Email
+            </h3>
+            <div className="mt-2">
+              <NotificationRow
+                label="High-risk analysis detected"
+                description="Sent when an analysis returns a HIGH risk level."
+                checked={prefs.email_high_risk}
+                onChange={() => flip("email_high_risk")}
+              />
+              <NotificationRow
+                label="Bulk analysis finished"
+                checked={prefs.email_bulk_done}
+                onChange={() => flip("email_bulk_done")}
+              />
+              <NotificationRow
+                label="Usage limit warning"
+                description="Sent at 80% of your plan's monthly limit."
+                checked={prefs.email_limit_warning}
+                onChange={() => flip("email_limit_warning")}
+              />
+              <NotificationRow
+                label="Someone joined your team"
+                checked={prefs.email_team_joined}
+                onChange={() => flip("email_team_joined")}
+              />
             </div>
-          </NotificationSection>
+          </section>
 
-          <NotificationSection
-            title="Team activity"
-            description="Notifications about activity in your teams."
-          >
-            <div className="flex flex-col">
-              {[
-                ["email_team", "Email", "Receive team notifications by email."],
-                [
-                  "inapp_team",
-                  "In-app",
-                  "Receive team notifications in the app.",
-                ],
-              ].map(([key, label, description]) => (
-                <label
-                  key={key}
-                  className="flex cursor-pointer items-center justify-between gap-4 border-b border-foreground/10 py-4 last:border-0"
-                >
-                  <span className="flex flex-col gap-1">
-                    <span className="text-sm text-foreground">{label}</span>
-                    <span className="text-xs text-foreground/50">
-                      {description}
-                    </span>
-                  </span>
-                  <input
-                    type="checkbox"
-                    checked={preferences[key as keyof typeof preferences]}
-                    onChange={(e) =>
-                      setPreferences({
-                        ...preferences,
-                        [key]: e.target.checked,
-                      })
-                    }
-                    className="size-4 accent-accent"
-                  />
-                </label>
-              ))}
+          <section>
+            <h3 className="font-mono text-[10px] font-semibold uppercase tracking-wider text-foreground/40">
+              In-app
+            </h3>
+            <div className="mt-2">
+              <NotificationRow
+                label="High-risk analysis detected"
+                checked={prefs.inapp_high_risk}
+                onChange={() => flip("inapp_high_risk")}
+              />
+              <NotificationRow
+                label="Bulk analysis finished"
+                checked={prefs.inapp_bulk_done}
+                onChange={() => flip("inapp_bulk_done")}
+              />
+              <NotificationRow
+                label="Usage limit warning"
+                checked={prefs.inapp_limit_warning}
+                onChange={() => flip("inapp_limit_warning")}
+              />
+              <NotificationRow
+                label="Someone joined your team"
+                checked={prefs.inapp_team_joined}
+                onChange={() => flip("inapp_team_joined")}
+              />
             </div>
-          </NotificationSection>
+          </section>
         </div>
       </div>
     </main>
