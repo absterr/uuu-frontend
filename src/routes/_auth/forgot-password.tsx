@@ -1,6 +1,6 @@
+import { createFileRoute } from "@tanstack/react-router";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import MockAppIcon from "@/components/icons/MockAppIcon";
-import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth/forgot-password")({
   component: ForgotPasswordPage,

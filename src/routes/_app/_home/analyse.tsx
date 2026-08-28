@@ -1,3 +1,5 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import AnalyseToggle, {
   type AnalyseMode,
 } from "@/components/app/home/analyse/AnalyseToggle";
@@ -13,8 +15,6 @@ import {
   MOCK_SINGLE_CODE,
   MOCK_SINGLE_RESULT,
 } from "@/lib/mock-data/analysis";
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 
 export const Route = createFileRoute("/_app/_home/analyse")({
   component: AnalysePage,
@@ -67,7 +67,7 @@ function AnalysePage() {
           risk_level: "MEDIUM",
           summary: `Analyzed ${f.filename}`,
           analysisId: 101,
-        }))
+        })),
       );
     }
     setPane("output");

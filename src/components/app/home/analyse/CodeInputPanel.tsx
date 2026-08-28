@@ -26,7 +26,7 @@ export default function CodeInputPanel({
           filename: f.name,
           lines: (await f.text()).split("\n").length,
           content: await f.text(),
-        }))
+        })),
       ).then((newFiles) => onChange([...value, ...newFiles]));
     } else {
       const file = fileList[0];
@@ -39,7 +39,7 @@ export default function CodeInputPanel({
       aria-labelledby="input-heading"
       className={cn(
         "min-h-0 min-w-0 flex-1 border-b border-foreground/10 flex flex-col lg:border-r lg:border-b-0",
-        className
+        className,
       )}
     >
       <header className="flex items-center justify-between border-b border-foreground/10 px-4 py-3 md:px-6">

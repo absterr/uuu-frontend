@@ -1,6 +1,6 @@
+import { createFileRoute } from "@tanstack/react-router";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import MockAppIcon from "@/components/icons/MockAppIcon";
-import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth/login")({
   component: LoginPage,
@@ -83,11 +83,21 @@ function LoginPage() {
 
         <p className="pt-6 text-center text-xs text-foreground/40">
           By continuing, you agree to our{" "}
-          <a href="#" className="text-foreground/70 underline hover:text-plum">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.example.com/terms"
+            className="text-foreground/70 underline hover:text-plum"
+          >
             Terms of Service
           </a>{" "}
           and{" "}
-          <a href="#" className="text-foreground/70 underline hover:text-plum">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.example.com/privacy"
+            className="text-foreground/70 underline hover:text-plum"
+          >
             Privacy Policy
           </a>
           .

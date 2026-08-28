@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import type { ComplianceReport } from "@/lib/mock-data/compliance";
+import { cn } from "@/lib/utils";
 
 interface Props {
   reports: ComplianceReport[];
@@ -18,7 +18,7 @@ export default function ComplianceList({
     <section
       className={cn(
         "min-h-0 flex-1 flex-col border-b border-foreground/10 lg:flex lg:border-r lg:border-b-0",
-        className
+        className,
       )}
     >
       <header className="border-b border-foreground/10 px-4 py-3 md:px-6">

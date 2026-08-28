@@ -1,8 +1,7 @@
+import { useState } from "react";
 import type { AnalyzeResponse } from "@/lib/analyse-code";
 import type { BulkResultItem } from "@/lib/mock-data/analysis";
 import { cn } from "@/lib/utils";
-import { Link } from "@tanstack/react-router";
-import { useState } from "react";
 import RiskBadge from "../RiskBadge";
 
 interface Props {
@@ -109,7 +108,10 @@ export default function AnalysisPanel({
                             </p>
                             {res.analysisId && (
                               <>
-                                <button className="text-xs text-plum hover:underline">
+                                <button
+                                  type="button"
+                                  className="text-xs text-plum hover:underline"
+                                >
                                   View code map →
                                 </button>
                                 {/*<Link
@@ -160,7 +162,10 @@ export default function AnalysisPanel({
                   </ul>
                 </div>
               )}
-              <button className="text-xs text-plum hover:underline">
+              <button
+                type="button"
+                className="text-xs text-plum hover:underline"
+              >
                 View code map →
               </button>
               {/*<Link

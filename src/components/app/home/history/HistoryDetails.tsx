@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import type { HistoryItem } from "@/lib/mock-data/history";
+import { cn } from "@/lib/utils";
 import RiskBadge from "../RiskBadge";
 
 interface Props {

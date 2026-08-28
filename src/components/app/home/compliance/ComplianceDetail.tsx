@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import type { ComplianceReport } from "@/lib/mock-data/compliance";
+import { cn } from "@/lib/utils";
 
 interface Props {
   report: ComplianceReport | null;
@@ -13,7 +13,7 @@ export default function ComplianceDetail({ report, onBack, className }: Props) {
       <section
         className={cn(
           "min-h-0 flex-1 items-center justify-center p-6 lg:flex",
-          className
+          className,
         )}
       >
         <p className="text-sm text-foreground/40">

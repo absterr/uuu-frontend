@@ -21,7 +21,7 @@ export default function PaneTabs({ pane, onPaneChange }: Props) {
               "flex-1 cursor-pointer border-b py-2 text-xs font-medium uppercase tracking-wider transition-colors",
               active
                 ? "border-accent text-plum"
-                : "border-transparent text-foreground/50 hover:text-foreground"
+                : "border-transparent text-foreground/50 hover:text-foreground",
             )}
           >
             {p}

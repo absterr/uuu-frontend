@@ -10,11 +10,11 @@ export const Route = createFileRoute("/_app/_home/compliance")({
 
 function CompliancePage() {
   const [selectedId, setSelectedId] = useState<number | null>(
-    MOCK_COMPLIANCE_REPORTS[0]?.analysis_id ?? null
+    MOCK_COMPLIANCE_REPORTS[0]?.analysis_id ?? null,
   );
   const selected =
     MOCK_COMPLIANCE_REPORTS.find(
-      (report) => report.analysis_id === selectedId
+      (report) => report.analysis_id === selectedId,
     ) ?? null;
   const showDetail = selectedId !== null;
 

@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import type { HistoryItem } from "@/lib/mock-data/history";
+import { cn } from "@/lib/utils";
 import RiskBadge from "../RiskBadge";
 
 interface Props {
@@ -19,7 +19,7 @@ export default function HistoryList({
     <section
       className={cn(
         "min-h-0 min-w-0 flex-1 flex-col border-b border-foreground/10 lg:flex lg:border-r lg:border-b-0",
-        className
+        className,
       )}
     >
       <header className="flex items-center justify-between border-b border-foreground/10 px-4 py-3">
