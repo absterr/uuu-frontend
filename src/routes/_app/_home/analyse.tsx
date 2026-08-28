@@ -91,13 +91,13 @@ function AnalysePage() {
               onChange={setInput}
               onSubmit={handleAnalyze}
               isLoading={isLoading}
-              className={pane === "input" ? "flex" : "hidden"}
+              className={pane === "input" ? "flex" : "hidden lg:flex"}
             />
             <AnalysisPanel
               result={result}
               error={error}
               isLoading={isLoading}
-              className={pane === "output" ? "flex" : "hidden"}
+              className={pane === "output" ? "flex" : "hidden lg:flex"}
             />
           </div>
         </div>
