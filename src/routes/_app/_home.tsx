@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_app/_home")({
 function RouteComponent() {
   return (
     <SidebarProvider>
-      <div className="flex h-dvh w-dvw overflow-hidden">
+      <div className="flex h-full min-h-0 flex-1 overflow-hidden">
         <Sidebar />
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           <Outlet />
