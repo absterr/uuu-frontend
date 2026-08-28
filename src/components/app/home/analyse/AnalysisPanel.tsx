@@ -108,13 +108,18 @@ export default function AnalysisPanel({
                               {res.summary}
                             </p>
                             {res.analysisId && (
-                              <Link
-                                to="/codemap/$id"
-                                params={{ id: String(res.analysisId) }}
-                                className="text-xs text-plum hover:underline"
-                              >
-                                View code map →
-                              </Link>
+                              <>
+                                <button className="text-xs text-plum hover:underline">
+                                  View code map →
+                                </button>
+                                {/*<Link
+                                  to="/codemap/$id"
+                                  params={{ id: String(res.analysisId) }}
+                                  className="text-xs text-plum hover:underline"
+                                >
+                                  View code map →
+                                </Link>*/}
+                              </>
                             )}
                           </>
                         )}
@@ -155,13 +160,16 @@ export default function AnalysisPanel({
                   </ul>
                 </div>
               )}
-              <Link
+              <button className="text-xs text-plum hover:underline">
+                View code map →
+              </button>
+              {/*<Link
                 to="/codemap/$id"
                 params={{ id: String(result.id) }}
                 className="text-xs text-plum hover:underline"
               >
                 View code map →
-              </Link>
+              </Link>*/}
             </div>
           ))}
       </div>
