@@ -31,13 +31,13 @@ export default function NotificationRow({
           "relative flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-2xl border transition-colors",
           checked
             ? "border-plum bg-plum"
-            : "border-foreground/20 bg-foreground/5"
+            : "border-foreground/20 bg-foreground/5",
         )}
       >
         <span
           className={cn(
             "size-3 rounded-full bg-background transition-transform",
-            checked ? "translate-x-5" : "translate-x-1"
+            checked ? "translate-x-5" : "translate-x-1",
           )}
         />
       </button>

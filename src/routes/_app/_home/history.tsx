@@ -14,7 +14,7 @@ function HistoryPage() {
   const [search, setSearch] = useState("");
   const [risk, setRisk] = useState<RiskLevel | "">("");
   const [selectedId, setSelectedId] = useState<number | null>(
-    MOCK_HISTORY[0]?.id ?? null
+    MOCK_HISTORY[0]?.id ?? null,
   );
 
   const items = MOCK_HISTORY.filter((item) => {

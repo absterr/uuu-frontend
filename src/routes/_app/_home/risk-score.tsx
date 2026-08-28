@@ -15,7 +15,7 @@ function RiskScorePage() {
           <h1 className="text-sm font-medium text-foreground/60">Risk Score</h1>
         </header>
 
-        <div className="flex min-h-0 flex-1 flex-col border border-foreground/10">
+        <div className="flex min-h-0 flex-1 flex-col border border-foreground/10 overflow-y-auto">
           <RiskOverview score={MOCK_RISK_SCORE} />
           <RiskBreakdown score={MOCK_RISK_SCORE} />
         </div>

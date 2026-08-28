@@ -72,7 +72,7 @@ export default function CodeInputPanel({
 
       <div className="flex min-h-0 w-full flex-1 flex-col p-4 md:p-6">
         {isBulk ? (
-          <div className="flex flex-1 flex-col gap-4">
+          <div className="flex flex-1 flex-col gap-4 min-h-0">
             <label
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {

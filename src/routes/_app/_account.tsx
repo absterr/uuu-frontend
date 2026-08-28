@@ -5,9 +5,5 @@ export const Route = createFileRoute("/_app/_account")({
 });
 
 function RouteComponent() {
-  return (
-    <>
-      <Outlet />
-    </>
-  );
+  return <Outlet />;
 }

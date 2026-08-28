@@ -65,22 +65,22 @@ function AnalysePage() {
           risk_level: "MEDIUM",
           summary: `Analyzed ${f.filename}`,
           analysisId: 101,
-        }))
+        })),
       );
     }
     setIsLoading(false);
   }
 
   return (
-    <main className="min-h-screen bg-background px-4 py-4 text-foreground md:px-6 md:py-6">
-      <div className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-7xl flex-col gap-4 md:min-h-[calc(100vh-3rem)]">
+    <main className="flex h-full min-h-0 flex-col bg-background px-4 py-4 text-foreground md:px-6 md:py-6">
+      <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col gap-4">
         <div className="flex items-center justify-between border-b border-foreground/10 pb-3">
           <h1 className="text-sm font-medium text-foreground/60">
             Analyse Code
           </h1>
           <AnalyseToggle mode={mode} onModeChange={handleModeChange} />
         </div>
-        <div className="flex min-h-0 flex-1 flex-col border border-foreground/10 lg:flex-row">
+        <div className="flex min-h-0 flex-1 flex-col lg:flex-row border border-foreground/10">
           <CodeInputPanel
             value={input}
             onChange={setInput}

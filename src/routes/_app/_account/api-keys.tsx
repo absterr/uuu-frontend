@@ -1,7 +1,7 @@
-import APIKeyRow from "@/components/app/account/api-keys/APIKeyRows";
-import { MOCK_API_KEYS } from "@/lib/mock-data/api-keys";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import APIKeyRow from "@/components/app/account/api-keys/APIKeyRows";
+import { MOCK_API_KEYS } from "@/lib/mock-data/api-keys";
 
 export const Route = createFileRoute("/_app/_account/api-keys")({
   component: ApiKeysPage,
@@ -13,8 +13,8 @@ function ApiKeysPage() {
   function revoke(id: number) {
     setKeys((current) =>
       current.map((apiKey) =>
-        apiKey.id === id ? { ...apiKey, status: "REVOKED" } : apiKey
-      )
+        apiKey.id === id ? { ...apiKey, status: "REVOKED" } : apiKey,
+      ),
     );
   }
 

@@ -1,5 +1,5 @@
-import ProfileSection from "@/components/app/account/profile/ProfileSection";
 import { createFileRoute } from "@tanstack/react-router";
+import ProfileSection from "@/components/app/account/profile/ProfileSection";
 
 const MOCK_PROFILE = {
   id: 1,

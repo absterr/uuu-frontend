@@ -1,6 +1,6 @@
-import NotificationRow from "@/components/app/account/notifications/NotificationRow";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import NotificationRow from "@/components/app/account/notifications/NotificationRow";
 
 export const Route = createFileRoute("/_app/_account/notifications")({
   component: NotificationsPage,

@@ -18,7 +18,7 @@ export default function APIKeyRow({ apiKey, onRevoke }: Props) {
           <span
             className={cn(
               "font-mono text-[10px] uppercase tracking-wider",
-              apiKey.status === "ACTIVE" ? "text-plum" : "text-foreground/30"
+              apiKey.status === "ACTIVE" ? "text-plum" : "text-foreground/30",
             )}
           >
             {apiKey.status}
