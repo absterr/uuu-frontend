@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import AnalyseToggle, {
   type AnalyseMode,
-} from "@/components/analyse/AnalyseToggle";
-import AnalysisPanel from "@/components/analyse/AnalysisPanel";
-import CodeInputPanel from "@/components/analyse/CodeInputPanel";
+} from "@/components/app/home/analyse/AnalyseToggle";
+import AnalysisPanel from "@/components/app/home/analyse/AnalysisPanel";
+import CodeInputPanel from "@/components/app/home/analyse/CodeInputPanel";
 import { type AnalyzeResponse, analyzeCode } from "@/lib/analyse-code";
 import {
   type BulkFile,
@@ -15,7 +15,9 @@ import {
   MOCK_SINGLE_RESULT,
 } from "@/lib/mock-data/analysis";
 
-export const Route = createFileRoute("/analyse")({ component: AnalysePage });
+export const Route = createFileRoute("/_app/_home/analyse")({
+  component: AnalysePage,
+});
 
 const INITIAL_SINGLE_RESPONSE: AnalyzeResponse = {
   status: "success",
@@ -63,7 +65,7 @@ function AnalysePage() {
           risk_level: "MEDIUM",
           summary: `Analyzed ${f.filename}`,
           analysisId: 101,
-        })),
+        }))
       );
     }
     setIsLoading(false);

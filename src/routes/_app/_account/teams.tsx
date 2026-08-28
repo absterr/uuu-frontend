@@ -1,9 +1,9 @@
 import { useState } from "react";
-import TeamMembers from "@/components/teams/TeamMembers";
+import TeamMembers from "@/components/app/account/teams/TeamMembers";
 import { MOCK_TEAMS } from "@/lib/mock-data/teams";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/teams")({
+export const Route = createFileRoute("/_app/_account/teams")({
   component: TeamsPage,
 });
 

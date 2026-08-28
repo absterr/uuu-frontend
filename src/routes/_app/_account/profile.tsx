@@ -1,4 +1,4 @@
-import ProfileSection from "@/components/profile/ProfileSection";
+import ProfileSection from "@/components/app/account/profile/ProfileSection";
 import { createFileRoute } from "@tanstack/react-router";
 
 const MOCK_PROFILE = {
@@ -9,7 +9,7 @@ const MOCK_PROFILE = {
   created_at: "2026-07-14T10:30:00Z",
 };
 
-export const Route = createFileRoute("/profile")({
+export const Route = createFileRoute("/_app/_account/profile")({
   component: ProfilePage,
 });
 

@@ -1,21 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import ComplianceDetail from "@/components/compliance/ComplianceDetail";
-import ComplianceList from "@/components/compliance/ComplianceList";
+import ComplianceDetail from "@/components/app/home/compliance/ComplianceDetail";
+import ComplianceList from "@/components/app/home/compliance/ComplianceList";
 import { MOCK_COMPLIANCE_REPORTS } from "@/lib/mock-data/compliance";
 
-export const Route = createFileRoute("/compliance")({
+export const Route = createFileRoute("/_app/_home/compliance")({
   component: CompliancePage,
 });
 
 function CompliancePage() {
   const [selectedId, setSelectedId] = useState<number | null>(
-    MOCK_COMPLIANCE_REPORTS[0]?.analysis_id ?? null,
+    MOCK_COMPLIANCE_REPORTS[0]?.analysis_id ?? null
   );
 
   const selected =
     MOCK_COMPLIANCE_REPORTS.find(
-      (report) => report.analysis_id === selectedId,
+      (report) => report.analysis_id === selectedId
     ) ?? null;
 
   return (

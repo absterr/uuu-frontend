@@ -10,141 +10,155 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AnalyseRouteImport } from './routes/analyse'
-import { Route as ApiKeysRouteImport } from './routes/api-keys'
-import { Route as ComplianceRouteImport } from './routes/compliance'
-import { Route as HistoryRouteImport } from './routes/history'
-import { Route as NotificationsRouteImport } from './routes/notifications'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as RiskScoreRouteImport } from './routes/risk-score'
-import { Route as TeamsRouteImport } from './routes/teams'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as AppAccountRouteImport } from './routes/_app/_account'
+import { Route as AppHomeRouteImport } from './routes/_app/_home'
+import { Route as AppAccountApiKeysRouteImport } from './routes/_app/_account/api-keys'
+import { Route as AppAccountNotificationsRouteImport } from './routes/_app/_account/notifications'
+import { Route as AppAccountProfileRouteImport } from './routes/_app/_account/profile'
+import { Route as AppAccountTeamsRouteImport } from './routes/_app/_account/teams'
+import { Route as AppHomeAnalyseRouteImport } from './routes/_app/_home/analyse'
+import { Route as AppHomeComplianceRouteImport } from './routes/_app/_home/compliance'
+import { Route as AppHomeHistoryRouteImport } from './routes/_app/_home/history'
+import { Route as AppHomeRiskScoreRouteImport } from './routes/_app/_home/risk-score'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AnalyseRoute = AnalyseRouteImport.update({
-  id: '/analyse',
-  path: '/analyse',
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiKeysRoute = ApiKeysRouteImport.update({
+const AppAccountRoute = AppAccountRouteImport.update({
+  id: '/_account',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHomeRoute = AppHomeRouteImport.update({
+  id: '/_home',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAccountApiKeysRoute = AppAccountApiKeysRouteImport.update({
   id: '/api-keys',
   path: '/api-keys',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppAccountRoute,
 } as any)
-const ComplianceRoute = ComplianceRouteImport.update({
-  id: '/compliance',
-  path: '/compliance',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HistoryRoute = HistoryRouteImport.update({
-  id: '/history',
-  path: '/history',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NotificationsRoute = NotificationsRouteImport.update({
+const AppAccountNotificationsRoute = AppAccountNotificationsRouteImport.update({
   id: '/notifications',
   path: '/notifications',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppAccountRoute,
 } as any)
-const ProfileRoute = ProfileRouteImport.update({
+const AppAccountProfileRoute = AppAccountProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppAccountRoute,
 } as any)
-const RiskScoreRoute = RiskScoreRouteImport.update({
-  id: '/risk-score',
-  path: '/risk-score',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TeamsRoute = TeamsRouteImport.update({
+const AppAccountTeamsRoute = AppAccountTeamsRouteImport.update({
   id: '/teams',
   path: '/teams',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppAccountRoute,
+} as any)
+const AppHomeAnalyseRoute = AppHomeAnalyseRouteImport.update({
+  id: '/analyse',
+  path: '/analyse',
+  getParentRoute: () => AppHomeRoute,
+} as any)
+const AppHomeComplianceRoute = AppHomeComplianceRouteImport.update({
+  id: '/compliance',
+  path: '/compliance',
+  getParentRoute: () => AppHomeRoute,
+} as any)
+const AppHomeHistoryRoute = AppHomeHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AppHomeRoute,
+} as any)
+const AppHomeRiskScoreRoute = AppHomeRiskScoreRouteImport.update({
+  id: '/risk-score',
+  path: '/risk-score',
+  getParentRoute: () => AppHomeRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/analyse': typeof AnalyseRoute
-  '/api-keys': typeof ApiKeysRoute
-  '/compliance': typeof ComplianceRoute
-  '/history': typeof HistoryRoute
-  '/notifications': typeof NotificationsRoute
-  '/profile': typeof ProfileRoute
-  '/risk-score': typeof RiskScoreRoute
-  '/teams': typeof TeamsRoute
+  '/api-keys': typeof AppAccountApiKeysRoute
+  '/notifications': typeof AppAccountNotificationsRoute
+  '/profile': typeof AppAccountProfileRoute
+  '/teams': typeof AppAccountTeamsRoute
+  '/analyse': typeof AppHomeAnalyseRoute
+  '/compliance': typeof AppHomeComplianceRoute
+  '/history': typeof AppHomeHistoryRoute
+  '/risk-score': typeof AppHomeRiskScoreRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/analyse': typeof AnalyseRoute
-  '/api-keys': typeof ApiKeysRoute
-  '/compliance': typeof ComplianceRoute
-  '/history': typeof HistoryRoute
-  '/notifications': typeof NotificationsRoute
-  '/profile': typeof ProfileRoute
-  '/risk-score': typeof RiskScoreRoute
-  '/teams': typeof TeamsRoute
+  '/api-keys': typeof AppAccountApiKeysRoute
+  '/notifications': typeof AppAccountNotificationsRoute
+  '/profile': typeof AppAccountProfileRoute
+  '/teams': typeof AppAccountTeamsRoute
+  '/analyse': typeof AppHomeAnalyseRoute
+  '/compliance': typeof AppHomeComplianceRoute
+  '/history': typeof AppHomeHistoryRoute
+  '/risk-score': typeof AppHomeRiskScoreRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/analyse': typeof AnalyseRoute
-  '/api-keys': typeof ApiKeysRoute
-  '/compliance': typeof ComplianceRoute
-  '/history': typeof HistoryRoute
-  '/notifications': typeof NotificationsRoute
-  '/profile': typeof ProfileRoute
-  '/risk-score': typeof RiskScoreRoute
-  '/teams': typeof TeamsRoute
+  '/_app': typeof AppRouteWithChildren
+  '/_app/_account': typeof AppAccountRouteWithChildren
+  '/_app/_home': typeof AppHomeRouteWithChildren
+  '/_app/_account/api-keys': typeof AppAccountApiKeysRoute
+  '/_app/_account/notifications': typeof AppAccountNotificationsRoute
+  '/_app/_account/profile': typeof AppAccountProfileRoute
+  '/_app/_account/teams': typeof AppAccountTeamsRoute
+  '/_app/_home/analyse': typeof AppHomeAnalyseRoute
+  '/_app/_home/compliance': typeof AppHomeComplianceRoute
+  '/_app/_home/history': typeof AppHomeHistoryRoute
+  '/_app/_home/risk-score': typeof AppHomeRiskScoreRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/analyse'
     | '/api-keys'
-    | '/compliance'
-    | '/history'
     | '/notifications'
     | '/profile'
-    | '/risk-score'
     | '/teams'
+    | '/analyse'
+    | '/compliance'
+    | '/history'
+    | '/risk-score'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/analyse'
     | '/api-keys'
-    | '/compliance'
-    | '/history'
     | '/notifications'
     | '/profile'
-    | '/risk-score'
     | '/teams'
+    | '/analyse'
+    | '/compliance'
+    | '/history'
+    | '/risk-score'
   id:
     | '__root__'
     | '/'
-    | '/analyse'
-    | '/api-keys'
-    | '/compliance'
-    | '/history'
-    | '/notifications'
-    | '/profile'
-    | '/risk-score'
-    | '/teams'
+    | '/_app'
+    | '/_app/_account'
+    | '/_app/_home'
+    | '/_app/_account/api-keys'
+    | '/_app/_account/notifications'
+    | '/_app/_account/profile'
+    | '/_app/_account/teams'
+    | '/_app/_home/analyse'
+    | '/_app/_home/compliance'
+    | '/_app/_home/history'
+    | '/_app/_home/risk-score'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AnalyseRoute: typeof AnalyseRoute
-  ApiKeysRoute: typeof ApiKeysRoute
-  ComplianceRoute: typeof ComplianceRoute
-  HistoryRoute: typeof HistoryRoute
-  NotificationsRoute: typeof NotificationsRoute
-  ProfileRoute: typeof ProfileRoute
-  RiskScoreRoute: typeof RiskScoreRoute
-  TeamsRoute: typeof TeamsRoute
+  AppRoute: typeof AppRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -156,75 +170,136 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/analyse': {
-      id: '/analyse'
-      path: '/analyse'
-      fullPath: '/analyse'
-      preLoaderRoute: typeof AnalyseRouteImport
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api-keys': {
-      id: '/api-keys'
+    '/_app/_account': {
+      id: '/_app/_account'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppAccountRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/_home': {
+      id: '/_app/_home'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppHomeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/_account/api-keys': {
+      id: '/_app/_account/api-keys'
       path: '/api-keys'
       fullPath: '/api-keys'
-      preLoaderRoute: typeof ApiKeysRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppAccountApiKeysRouteImport
+      parentRoute: typeof AppAccountRoute
     }
-    '/compliance': {
-      id: '/compliance'
-      path: '/compliance'
-      fullPath: '/compliance'
-      preLoaderRoute: typeof ComplianceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/history': {
-      id: '/history'
-      path: '/history'
-      fullPath: '/history'
-      preLoaderRoute: typeof HistoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/notifications': {
-      id: '/notifications'
+    '/_app/_account/notifications': {
+      id: '/_app/_account/notifications'
       path: '/notifications'
       fullPath: '/notifications'
-      preLoaderRoute: typeof NotificationsRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppAccountNotificationsRouteImport
+      parentRoute: typeof AppAccountRoute
     }
-    '/profile': {
-      id: '/profile'
+    '/_app/_account/profile': {
+      id: '/_app/_account/profile'
       path: '/profile'
       fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppAccountProfileRouteImport
+      parentRoute: typeof AppAccountRoute
     }
-    '/risk-score': {
-      id: '/risk-score'
-      path: '/risk-score'
-      fullPath: '/risk-score'
-      preLoaderRoute: typeof RiskScoreRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/teams': {
-      id: '/teams'
+    '/_app/_account/teams': {
+      id: '/_app/_account/teams'
       path: '/teams'
       fullPath: '/teams'
-      preLoaderRoute: typeof TeamsRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppAccountTeamsRouteImport
+      parentRoute: typeof AppAccountRoute
+    }
+    '/_app/_home/analyse': {
+      id: '/_app/_home/analyse'
+      path: '/analyse'
+      fullPath: '/analyse'
+      preLoaderRoute: typeof AppHomeAnalyseRouteImport
+      parentRoute: typeof AppHomeRoute
+    }
+    '/_app/_home/compliance': {
+      id: '/_app/_home/compliance'
+      path: '/compliance'
+      fullPath: '/compliance'
+      preLoaderRoute: typeof AppHomeComplianceRouteImport
+      parentRoute: typeof AppHomeRoute
+    }
+    '/_app/_home/history': {
+      id: '/_app/_home/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AppHomeHistoryRouteImport
+      parentRoute: typeof AppHomeRoute
+    }
+    '/_app/_home/risk-score': {
+      id: '/_app/_home/risk-score'
+      path: '/risk-score'
+      fullPath: '/risk-score'
+      preLoaderRoute: typeof AppHomeRiskScoreRouteImport
+      parentRoute: typeof AppHomeRoute
     }
   }
 }
 
+interface AppAccountRouteChildren {
+  AppAccountApiKeysRoute: typeof AppAccountApiKeysRoute
+  AppAccountNotificationsRoute: typeof AppAccountNotificationsRoute
+  AppAccountProfileRoute: typeof AppAccountProfileRoute
+  AppAccountTeamsRoute: typeof AppAccountTeamsRoute
+}
+
+const AppAccountRouteChildren: AppAccountRouteChildren = {
+  AppAccountApiKeysRoute: AppAccountApiKeysRoute,
+  AppAccountNotificationsRoute: AppAccountNotificationsRoute,
+  AppAccountProfileRoute: AppAccountProfileRoute,
+  AppAccountTeamsRoute: AppAccountTeamsRoute,
+}
+
+const AppAccountRouteWithChildren = AppAccountRoute._addFileChildren(
+  AppAccountRouteChildren,
+)
+
+interface AppHomeRouteChildren {
+  AppHomeAnalyseRoute: typeof AppHomeAnalyseRoute
+  AppHomeComplianceRoute: typeof AppHomeComplianceRoute
+  AppHomeHistoryRoute: typeof AppHomeHistoryRoute
+  AppHomeRiskScoreRoute: typeof AppHomeRiskScoreRoute
+}
+
+const AppHomeRouteChildren: AppHomeRouteChildren = {
+  AppHomeAnalyseRoute: AppHomeAnalyseRoute,
+  AppHomeComplianceRoute: AppHomeComplianceRoute,
+  AppHomeHistoryRoute: AppHomeHistoryRoute,
+  AppHomeRiskScoreRoute: AppHomeRiskScoreRoute,
+}
+
+const AppHomeRouteWithChildren =
+  AppHomeRoute._addFileChildren(AppHomeRouteChildren)
+
+interface AppRouteChildren {
+  AppAccountRoute: typeof AppAccountRouteWithChildren
+  AppHomeRoute: typeof AppHomeRouteWithChildren
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAccountRoute: AppAccountRouteWithChildren,
+  AppHomeRoute: AppHomeRouteWithChildren,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AnalyseRoute: AnalyseRoute,
-  ApiKeysRoute: ApiKeysRoute,
-  ComplianceRoute: ComplianceRoute,
-  HistoryRoute: HistoryRoute,
-  NotificationsRoute: NotificationsRoute,
-  ProfileRoute: ProfileRoute,
-  RiskScoreRoute: RiskScoreRoute,
-  TeamsRoute: TeamsRoute,
+  AppRoute: AppRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

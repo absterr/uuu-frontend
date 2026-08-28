@@ -1,9 +1,9 @@
-import APIKeyRow from "@/components/api-keys/APIKeyRows";
+import APIKeyRow from "@/components/app/account/api-keys/APIKeyRows";
 import { MOCK_API_KEYS } from "@/lib/mock-data/api-keys";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
-export const Route = createFileRoute("/api-keys")({
+export const Route = createFileRoute("/_app/_account/api-keys")({
   component: ApiKeysPage,
 });
 
