@@ -1,13 +1,21 @@
+import { cn } from "@/lib/utils";
 import type { ComplianceReport } from "@/lib/mock-data/compliance";
 
 interface Props {
   report: ComplianceReport | null;
+  onBack: () => void;
+  className?: string;
 }
 
-export default function ComplianceDetail({ report }: Props) {
+export default function ComplianceDetail({ report, onBack, className }: Props) {
   if (!report) {
     return (
-      <section className="flex min-h-0 flex-1 items-center justify-center p-6">
+      <section
+        className={cn(
+          "min-h-0 flex-1 items-center justify-center p-6 lg:flex",
+          className
+        )}
+      >
         <p className="text-sm text-foreground/40">
           Select a compliance report to view its details.
         </p>
@@ -16,9 +24,17 @@ export default function ComplianceDetail({ report }: Props) {
   }
 
   return (
-    <section className="flex min-h-0 flex-1 flex-col">
-      <header className="flex items-center justify-between gap-4 border-b border-foreground/10 px-4 py-3 md:px-6">
-        <div className="flex min-w-0 flex-col gap-1">
+    <section className={cn("min-h-0 flex-1 flex-col lg:flex", className)}>
+      <header className="flex items-center gap-3 border-b border-foreground/10 px-4 py-3 md:px-6">
+        <button
+          type="button"
+          onClick={onBack}
+          aria-label="Back to compliance list"
+          className="cursor-pointer text-foreground/50 hover:text-foreground lg:hidden"
+        >
+          ←
+        </button>
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
           <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-foreground/40">
             Compliance
           </span>
@@ -26,7 +42,6 @@ export default function ComplianceDetail({ report }: Props) {
             {report.standard_name}
           </h2>
         </div>
-
         <span className="shrink-0 text-xs font-medium text-foreground/60">
           {report.compliance_score}%
         </span>
@@ -57,7 +72,6 @@ export default function ComplianceDetail({ report }: Props) {
             <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
               Checks
             </span>
-
             <ul className="divide-y divide-foreground/10 border-y border-foreground/10">
               {report.checks.map((check) => (
                 <li
@@ -71,7 +85,6 @@ export default function ComplianceDetail({ report }: Props) {
                 </li>
               ))}
             </ul>
-
             <span className="font-mono text-[10px] uppercase tracking-wider text-foreground/40">
               {report.passed_checks} / {report.total_checks} passed
             </span>
@@ -82,7 +95,6 @@ export default function ComplianceDetail({ report }: Props) {
               <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
                 Risks
               </span>
-
               <ul className="flex flex-col gap-2">
                 {report.risks.map((risk) => (
                   <li
@@ -90,7 +102,7 @@ export default function ComplianceDetail({ report }: Props) {
                     className="flex items-center gap-2 text-sm text-foreground/70"
                   >
                     <span
-                      className="size-1 shrink-0 rounded-full bg-accent"
+                      className="size-1 shrink-0 bg-accent"
                       aria-hidden="true"
                     />
                     {risk}
@@ -102,8 +114,7 @@ export default function ComplianceDetail({ report }: Props) {
 
           <button
             type="button"
-            className={`w-full border border-foreground/15 px-3 py-2 text-xs font-medium
-              text-foreground/70 hover:border-accent hover:text-plum cursor-pointer`}
+            className="w-full cursor-pointer border border-foreground/15 px-3 py-2 text-xs font-medium text-foreground/70 hover:border-accent hover:text-plum"
           >
             Download PDF report ↗
           </button>

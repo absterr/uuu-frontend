@@ -1,16 +1,32 @@
+import { cn } from "@/lib/utils";
 import type { HistoryItem } from "@/lib/mock-data/history";
 import RiskBadge from "../RiskBadge";
 
-export default function HistoryDetails({ item }: { item: HistoryItem | null }) {
+interface Props {
+  item: HistoryItem | null;
+  onBack: () => void;
+  className?: string;
+}
+
+export default function HistoryDetails({ item, onBack, className }: Props) {
   return (
-    <section className="flex min-h-0 min-w-0 flex-1 flex-col">
-      <header className="flex items-center justify-between border-b border-foreground/10 px-4 py-3">
-        <h2 className="text-sm font-medium">
+    <section
+      className={cn("min-h-0 min-w-0 flex-1 flex-col lg:flex", className)}
+    >
+      <header className="flex items-center gap-3 border-b border-foreground/10 px-4 py-3">
+        <button
+          type="button"
+          onClick={onBack}
+          aria-label="Back to history list"
+          className="cursor-pointer text-foreground/50 hover:text-foreground lg:hidden"
+        >
+          ←
+        </button>
+        <h2 className="flex-1 truncate text-sm font-medium">
           {item ? `Analysis #${item.id}` : "Analysis Details"}
         </h2>
         {item && <RiskBadge level={item.risk_level} />}
       </header>
-
       <div className="min-h-0 flex-1 overflow-y-auto p-4 md:p-6">
         {!item ? (
           <div className="flex min-h-full items-center justify-center text-sm text-foreground/40">
@@ -24,7 +40,6 @@ export default function HistoryDetails({ item }: { item: HistoryItem | null }) {
               </span>
               <p className="text-sm leading-6">{item.summary}</p>
             </section>
-
             <section className="flex flex-col gap-2">
               <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
                 Explanation
@@ -33,7 +48,6 @@ export default function HistoryDetails({ item }: { item: HistoryItem | null }) {
                 {item.explanation}
               </p>
             </section>
-
             {item.risks.length > 0 && (
               <section className="flex flex-col gap-2">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
@@ -46,7 +60,7 @@ export default function HistoryDetails({ item }: { item: HistoryItem | null }) {
                       className="flex gap-2 text-sm text-foreground/70"
                     >
                       <span
-                        className="mt-2 size-1 shrink-0 rounded-full bg-accent"
+                        className="mt-2 size-1 shrink-0 bg-accent"
                         aria-hidden="true"
                       />
                       {risk}
@@ -55,7 +69,6 @@ export default function HistoryDetails({ item }: { item: HistoryItem | null }) {
                 </ul>
               </section>
             )}
-
             <section className="flex flex-col gap-2">
               <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
                 Source
@@ -64,7 +77,6 @@ export default function HistoryDetails({ item }: { item: HistoryItem | null }) {
                 <code>{item.cobol_code}</code>
               </pre>
             </section>
-
             <section className="flex flex-col gap-2">
               <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
                 Python Equivalent

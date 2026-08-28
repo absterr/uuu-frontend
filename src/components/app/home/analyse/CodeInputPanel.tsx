@@ -1,10 +1,12 @@
 import type { BulkFile } from "@/lib/mock-data/analysis";
+import { cn } from "@/lib/utils";
 
 interface Props {
   value: string | BulkFile[];
   onChange: (val: string | BulkFile[]) => void;
   onSubmit: () => void;
   isLoading: boolean;
+  className?: string;
 }
 
 export default function CodeInputPanel({
@@ -12,6 +14,7 @@ export default function CodeInputPanel({
   onChange,
   onSubmit,
   isLoading,
+  className,
 }: Props) {
   const isBulk = Array.isArray(value);
 
@@ -23,7 +26,7 @@ export default function CodeInputPanel({
           filename: f.name,
           lines: (await f.text()).split("\n").length,
           content: await f.text(),
-        })),
+        }))
       ).then((newFiles) => onChange([...value, ...newFiles]));
     } else {
       const file = fileList[0];
@@ -34,7 +37,10 @@ export default function CodeInputPanel({
   return (
     <section
       aria-labelledby="input-heading"
-      className="flex min-h-0 w-full min-w-0 flex-1 flex-col border-b border-foreground/10 lg:border-r lg:border-b-0"
+      className={cn(
+        "min-h-0 min-w-0 flex-1 border-b border-foreground/10 flex flex-col lg:border-r lg:border-b-0",
+        className
+      )}
     >
       <header className="flex items-center justify-between border-b border-foreground/10 px-4 py-3 md:px-6">
         <div className="flex flex-col gap-1">

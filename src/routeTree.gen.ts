@@ -19,6 +19,7 @@ import { Route as AppAccountProfileRouteImport } from './routes/_app/_account/pr
 import { Route as AppAccountTeamsRouteImport } from './routes/_app/_account/teams'
 import { Route as AppHomeAnalyseRouteImport } from './routes/_app/_home/analyse'
 import { Route as AppHomeComplianceRouteImport } from './routes/_app/_home/compliance'
+import { Route as AppHomeDashboardRouteImport } from './routes/_app/_home/dashboard'
 import { Route as AppHomeHistoryRouteImport } from './routes/_app/_home/history'
 import { Route as AppHomeRiskScoreRouteImport } from './routes/_app/_home/risk-score'
 
@@ -69,6 +70,11 @@ const AppHomeComplianceRoute = AppHomeComplianceRouteImport.update({
   path: '/compliance',
   getParentRoute: () => AppHomeRoute,
 } as any)
+const AppHomeDashboardRoute = AppHomeDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppHomeRoute,
+} as any)
 const AppHomeHistoryRoute = AppHomeHistoryRouteImport.update({
   id: '/history',
   path: '/history',
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/teams': typeof AppAccountTeamsRoute
   '/analyse': typeof AppHomeAnalyseRoute
   '/compliance': typeof AppHomeComplianceRoute
+  '/dashboard': typeof AppHomeDashboardRoute
   '/history': typeof AppHomeHistoryRoute
   '/risk-score': typeof AppHomeRiskScoreRoute
 }
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/teams': typeof AppAccountTeamsRoute
   '/analyse': typeof AppHomeAnalyseRoute
   '/compliance': typeof AppHomeComplianceRoute
+  '/dashboard': typeof AppHomeDashboardRoute
   '/history': typeof AppHomeHistoryRoute
   '/risk-score': typeof AppHomeRiskScoreRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/_app/_account/teams': typeof AppAccountTeamsRoute
   '/_app/_home/analyse': typeof AppHomeAnalyseRoute
   '/_app/_home/compliance': typeof AppHomeComplianceRoute
+  '/_app/_home/dashboard': typeof AppHomeDashboardRoute
   '/_app/_home/history': typeof AppHomeHistoryRoute
   '/_app/_home/risk-score': typeof AppHomeRiskScoreRoute
 }
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/teams'
     | '/analyse'
     | '/compliance'
+    | '/dashboard'
     | '/history'
     | '/risk-score'
   fileRoutesByTo: FileRoutesByTo
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/teams'
     | '/analyse'
     | '/compliance'
+    | '/dashboard'
     | '/history'
     | '/risk-score'
   id:
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/_app/_account/teams'
     | '/_app/_home/analyse'
     | '/_app/_home/compliance'
+    | '/_app/_home/dashboard'
     | '/_app/_home/history'
     | '/_app/_home/risk-score'
   fileRoutesById: FileRoutesById
@@ -233,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHomeComplianceRouteImport
       parentRoute: typeof AppHomeRoute
     }
+    '/_app/_home/dashboard': {
+      id: '/_app/_home/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppHomeDashboardRouteImport
+      parentRoute: typeof AppHomeRoute
+    }
     '/_app/_home/history': {
       id: '/_app/_home/history'
       path: '/history'
@@ -271,6 +290,7 @@ const AppAccountRouteWithChildren = AppAccountRoute._addFileChildren(
 interface AppHomeRouteChildren {
   AppHomeAnalyseRoute: typeof AppHomeAnalyseRoute
   AppHomeComplianceRoute: typeof AppHomeComplianceRoute
+  AppHomeDashboardRoute: typeof AppHomeDashboardRoute
   AppHomeHistoryRoute: typeof AppHomeHistoryRoute
   AppHomeRiskScoreRoute: typeof AppHomeRiskScoreRoute
 }
@@ -278,6 +298,7 @@ interface AppHomeRouteChildren {
 const AppHomeRouteChildren: AppHomeRouteChildren = {
   AppHomeAnalyseRoute: AppHomeAnalyseRoute,
   AppHomeComplianceRoute: AppHomeComplianceRoute,
+  AppHomeDashboardRoute: AppHomeDashboardRoute,
   AppHomeHistoryRoute: AppHomeHistoryRoute,
   AppHomeRiskScoreRoute: AppHomeRiskScoreRoute,
 }

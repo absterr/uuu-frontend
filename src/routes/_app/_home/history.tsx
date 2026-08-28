@@ -1,10 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import HistoryDetail from "@/components/app/home/history/HistoryDetails";
 import HistoryFilters from "@/components/app/home/history/HistoryFilter";
 import HistoryList from "@/components/app/home/history/HistoryList";
 import type { RiskLevel } from "@/lib/analyse-code";
 import { MOCK_HISTORY } from "@/lib/mock-data/history";
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const Route = createFileRoute("/_app/_home/history")({
   component: HistoryPage,
@@ -14,12 +14,10 @@ function HistoryPage() {
   const [search, setSearch] = useState("");
   const [risk, setRisk] = useState<RiskLevel | "">("");
   const [selectedId, setSelectedId] = useState<number | null>(
-    MOCK_HISTORY[0]?.id ?? null,
+    MOCK_HISTORY[0]?.id ?? null
   );
-
   const items = MOCK_HISTORY.filter((item) => {
     const query = search.toLowerCase();
-
     return (
       (!query ||
         item.summary.toLowerCase().includes(query) ||
@@ -27,11 +25,11 @@ function HistoryPage() {
       (!risk || item.risk_level === risk)
     );
   });
-
   const selected = MOCK_HISTORY.find((item) => item.id === selectedId) ?? null;
+  const showDetail = selectedId !== null;
 
   return (
-    <main className="flex min-h-screen flex-col bg-background px-4 py-4 text-foreground md:px-6 md:py-6">
+    <main className="flex h-full min-h-0 flex-col bg-background px-4 py-4 text-foreground md:px-6 md:py-6">
       <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col gap-4">
         <header className="flex items-center justify-between border-b border-foreground/10 pb-3">
           <h1 className="text-sm font-medium text-foreground/60">
@@ -41,7 +39,6 @@ function HistoryPage() {
             {items.length} results
           </span>
         </header>
-
         <div className="flex min-h-0 flex-1 flex-col border border-foreground/10">
           <HistoryFilters
             search={search}
@@ -49,14 +46,18 @@ function HistoryPage() {
             onSearch={setSearch}
             onRisk={setRisk}
           />
-
           <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
             <HistoryList
               items={items}
               selectedId={selectedId}
               onSelect={setSelectedId}
+              className={showDetail ? "hidden" : "flex"}
             />
-            <HistoryDetail item={selected} />
+            <HistoryDetail
+              item={selected}
+              onBack={() => setSelectedId(null)}
+              className={showDetail ? "flex" : "hidden"}
+            />
           </div>
         </div>
       </div>

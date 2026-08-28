@@ -1,16 +1,23 @@
-import { Link } from "@tanstack/react-router";
-import { useState } from "react";
 import type { AnalyzeResponse } from "@/lib/analyse-code";
 import type { BulkResultItem } from "@/lib/mock-data/analysis";
+import { cn } from "@/lib/utils";
+import { Link } from "@tanstack/react-router";
+import { useState } from "react";
 import RiskBadge from "../RiskBadge";
 
 interface Props {
   result: AnalyzeResponse | BulkResultItem[] | null;
   error: string | null;
   isLoading: boolean;
+  className?: string;
 }
 
-export default function AnalysisPanel({ result, error, isLoading }: Props) {
+export default function AnalysisPanel({
+  result,
+  error,
+  isLoading,
+  className,
+}: Props) {
   const [openId, setOpenId] = useState<string | null>(null);
   const isBulk = Array.isArray(result);
   const isEmpty = !result || (isBulk && result.length === 0);
@@ -20,7 +27,7 @@ export default function AnalysisPanel({ result, error, isLoading }: Props) {
       aria-labelledby="output-heading"
       aria-live="polite"
       aria-busy={isLoading}
-      className="flex min-h-0 w-full min-w-0 flex-1 flex-col"
+      className={cn("min-h-0 w-full min-w-0 flex-1 flex flex-col", className)}
     >
       <header className="flex items-center justify-between border-b border-foreground/10 px-4 py-3 md:px-6">
         <div className="flex flex-col gap-1">

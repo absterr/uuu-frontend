@@ -1,10 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import AnalyseToggle, {
   type AnalyseMode,
 } from "@/components/app/home/analyse/AnalyseToggle";
 import AnalysisPanel from "@/components/app/home/analyse/AnalysisPanel";
 import CodeInputPanel from "@/components/app/home/analyse/CodeInputPanel";
+import PaneTabs from "@/components/app/home/PaneTabs";
 import { type AnalyzeResponse, analyzeCode } from "@/lib/analyse-code";
 import {
   type BulkFile,
@@ -14,6 +13,8 @@ import {
   MOCK_SINGLE_CODE,
   MOCK_SINGLE_RESULT,
 } from "@/lib/mock-data/analysis";
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const Route = createFileRoute("/_app/_home/analyse")({
   component: AnalysePage,
@@ -28,6 +29,7 @@ const INITIAL_SINGLE_RESPONSE: AnalyzeResponse = {
 
 function AnalysePage() {
   const [mode, setMode] = useState<AnalyseMode>("Single");
+  const [pane, setPane] = useState<"input" | "output">("input");
   const [input, setInput] = useState<string | BulkFile[]>(MOCK_SINGLE_CODE);
   const [result, setResult] = useState<
     AnalyzeResponse | BulkResultItem[] | null
@@ -65,9 +67,10 @@ function AnalysePage() {
           risk_level: "MEDIUM",
           summary: `Analyzed ${f.filename}`,
           analysisId: 101,
-        })),
+        }))
       );
     }
+    setPane("output");
     setIsLoading(false);
   }
 
@@ -80,14 +83,23 @@ function AnalysePage() {
           </h1>
           <AnalyseToggle mode={mode} onModeChange={handleModeChange} />
         </div>
-        <div className="flex min-h-0 flex-1 flex-col lg:flex-row border border-foreground/10">
-          <CodeInputPanel
-            value={input}
-            onChange={setInput}
-            onSubmit={handleAnalyze}
-            isLoading={isLoading}
-          />
-          <AnalysisPanel result={result} error={error} isLoading={isLoading} />
+        <div className="flex min-h-0 flex-1 flex-col border border-foreground/10">
+          <PaneTabs pane={pane} onPaneChange={setPane} />
+          <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+            <CodeInputPanel
+              value={input}
+              onChange={setInput}
+              onSubmit={handleAnalyze}
+              isLoading={isLoading}
+              className={pane === "input" ? "flex" : "hidden"}
+            />
+            <AnalysisPanel
+              result={result}
+              error={error}
+              isLoading={isLoading}
+              className={pane === "output" ? "flex" : "hidden"}
+            />
+          </div>
         </div>
       </div>
     </main>
