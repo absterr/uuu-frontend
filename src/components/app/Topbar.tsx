@@ -17,7 +17,7 @@ const navLinks = [
   { label: "Profile", to: "/profile" },
   { label: "Teams", to: "/teams" },
   { label: "Notifications", to: "/notifications" },
-  { label: "API keys", to: "/apikeys" },
+  { label: "API keys", to: "/api-keys" },
 ];
 
 const getInitials = (name: string) => {

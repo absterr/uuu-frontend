@@ -10,7 +10,7 @@ export default function ProfileSection({
   children,
 }: Props) {
   return (
-    <section className="flex flex-col gap-4 border-b border-foreground/10 py-8 first:pt-0 last:border-0">
+    <section className="flex flex-col gap-8 border-b border-foreground/10 py-8 first:pt-0 last:border-0">
       <div className="flex flex-col gap-1">
         <h2 className="text-sm font-medium text-foreground">{title}</h2>
         {description && (
