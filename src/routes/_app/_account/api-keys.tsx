@@ -13,8 +13,8 @@ function ApiKeysPage() {
   function revoke(id: number) {
     setKeys((current) =>
       current.map((apiKey) =>
-        apiKey.id === id ? { ...apiKey, status: "REVOKED" } : apiKey
-      )
+        apiKey.id === id ? { ...apiKey, status: "REVOKED" } : apiKey,
+      ),
     );
   }
 

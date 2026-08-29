@@ -1,5 +1,5 @@
-import Topbar from "@/components/app/Topbar";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+import Topbar from "@/components/app/Topbar";
 
 export const Route = createFileRoute("/_app")({
   component: RouteComponent,

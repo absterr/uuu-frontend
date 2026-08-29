@@ -33,7 +33,7 @@ export default function AccountNav() {
                     className={cn(
                       "block border-l-2 border-transparent py-2 pl-4 text-sm text-foreground/60 hover:text-foreground",
                       active &&
-                        "border-plum text-plum font-medium hover:text-plum"
+                        "border-plum text-plum font-medium hover:text-plum",
                     )}
                   >
                     {item.label}
@@ -78,7 +78,7 @@ export default function AccountNav() {
                 to={item.to}
                 className={cn(
                   "text-sm text-foreground/60 hover:text-foreground px-1",
-                  active && "text-plum font-medium hover:text-plum"
+                  active && "text-plum font-medium hover:text-plum",
                 )}
               >
                 {item.label}

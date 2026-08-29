@@ -1,5 +1,5 @@
-import AccountNav from "@/components/app/account/AccountNav";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+import AccountNav from "@/components/app/account/AccountNav";
 
 export const Route = createFileRoute("/_app/_account")({
   component: RouteComponent,

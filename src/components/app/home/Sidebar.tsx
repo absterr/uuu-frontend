@@ -40,7 +40,7 @@ export default function Sidebar() {
           "bg-foreground/5 transition-[width, transform] duration-300 ease-in-out shrink-0",
           isCollapsed
             ? "w-13 sm:w-17.5"
-            : "w-56 md:w-42 lg:w-64 max-md:fixed max-md:top-4 max-md:bottom-4 max-md:left-4 max-md:z-50"
+            : "w-56 md:w-42 lg:w-64 max-md:fixed max-md:top-4 max-md:bottom-4 max-md:left-4 max-md:z-50",
         )}
       >
         <nav className="flex flex-col flex-1 md:px-2 py-6 md:py-10 gap-y-5 md:gap-y-6">
@@ -57,7 +57,7 @@ export default function Sidebar() {
         <div
           className={cn(
             "flex justify-between gap-y-10 flex-col items-center",
-            !isCollapsed && "flex-row sm:flex-col xl:flex-row items-left"
+            !isCollapsed && "flex-row sm:flex-col xl:flex-row items-left",
           )}
         >
           <button
@@ -69,7 +69,7 @@ export default function Sidebar() {
             <ChevronRightIcon
               className={cn(
                 "w-3 h-3 md:w-4 md:h-4 shrink-0 transition-transform duration-200",
-                isCollapsed ? "rotate-0" : "rotate-180"
+                isCollapsed ? "rotate-0" : "rotate-180",
               )}
             />
             {!isCollapsed && <span className="truncate text-sm">Collapse</span>}
@@ -106,7 +106,7 @@ const NavItem = ({
         "flex items-center gap-3 px-4 py-2 text-sm transition-colors",
         isActive
           ? "text-foreground"
-          : "text-muted-foreground hover:text-foreground"
+          : "text-muted-foreground hover:text-foreground",
       )}
     >
       <Icon className="w-4 h-4  md:w-5 md:h-5 shrink-0" />
