@@ -1,15 +1,9 @@
-export default function LoadingSpinner({
-  size = 6,
-  className,
-}: {
-  size?: number;
-  className?: string;
-}) {
+export default function LoadingSpinner() {
   return (
     <div role="status">
       <svg
         aria-hidden="true"
-        className={`inline w-${size} h-${size} animate-spin ${className}`}
+        className="inline w-5 h-5 animate-spin text-background/80 fill-plum"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

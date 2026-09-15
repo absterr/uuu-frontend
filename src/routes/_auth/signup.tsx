@@ -1,13 +1,52 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import MockAppIcon from "@/components/icons/MockAppIcon";
+import { api } from "@/lib/api";
+import { signupSchema, type SignupForm } from "@/lib/schema/auth-schema";
 
 export const Route = createFileRoute("/_auth/signup")({
-  component: AnalysePage,
+  component: SignupPage,
 });
 
-function AnalysePage() {
-  const isPending = false;
+function SignupPage() {
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignupForm>({
+    resolver: zodResolver(signupSchema),
+    mode: "onBlur",
+  });
+
+  const onSubmit = async ({ name, email, password }: SignupForm) => {
+    const toastId = toast.loading("Creating your account...");
+
+    try {
+      await api("/auth/signup", {
+        method: "POST",
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      toast.success("Account created. Check your email to verify it.", {
+        id: toastId,
+      });
+
+      await navigate({ to: "/login" });
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Account creation failed",
+        {
+          id: toastId,
+        }
+      );
+    }
+  };
 
   return (
     <main className="flex min-h-screen items-center justify-center px-4 py-8">
@@ -23,42 +62,55 @@ function AnalysePage() {
           </p>
         </header>
 
-        <form className="flex flex-col gap-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="name"
-              className="text-xs font-medium text-foreground/60"
-            >
-              Name
-            </label>
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="name"
+                className="text-xs font-medium text-foreground/60"
+              >
+                Name
+              </label>
+
+              {errors.name && (
+                <p className="text-xs text-red-500">{errors.name.message}</p>
+              )}
+            </div>
+
             <input
+              {...register("name")}
               id="name"
-              name="name"
               type="text"
               autoComplete="name"
               placeholder="Enter your name"
-              className="h-11 w-full border border-foreground/15 bg-foreground/5 px-3 text-sm
-                  text-foreground placeholder:text-foreground/30 focus-visible:border-accent
-                  focus-visible:outline-1 focus-visible:outline-accent"
+              className="h-11 w-full border border-foreground/15 bg-foreground/5
+              px-3 text-sm text-foreground placeholder:text-foreground/30 focus-visible:border-accent
+              focus-visible:outline-1 focus-visible:outline-accent"
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="email"
-              className="text-xs font-medium text-foreground/60"
-            >
-              Email
-            </label>
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="email"
+                className="text-xs font-medium text-foreground/60"
+              >
+                Email
+              </label>
+
+              {errors.email && (
+                <p className="text-xs text-red-500">{errors.email.message}</p>
+              )}
+            </div>
             <input
+              {...register("email")}
               id="email"
-              name="email"
               type="email"
               autoComplete="email"
               placeholder="Enter your email address"
-              className="h-11 w-full border border-foreground/15 bg-foreground/5 px-3 text-sm
-                  text-foreground placeholder:text-foreground/30 focus-visible:border-accent
-                  focus-visible:outline-1 focus-visible:outline-accent"
+              className="h-11 w-full border border-foreground/15 bg-foreground/5
+              px-3 text-sm text-foreground placeholder:text-foreground/30 focus-visible:border-accent
+              focus-visible:outline-1 focus-visible:outline-accent"
             />
           </div>
 
@@ -67,52 +119,68 @@ function AnalysePage() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="password"
-              className="text-xs font-medium text-foreground/60"
-            >
-              Password
-            </label>
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="password"
+                className="text-xs font-medium text-foreground/60"
+              >
+                Password
+              </label>
+
+              {errors.password && (
+                <p className="text-xs text-red-500">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
             <input
+              {...register("password")}
               id="password"
-              name="password"
               type="password"
               autoComplete="new-password"
               placeholder="Enter your password"
-              className="h-11 w-full border border-foreground/15 bg-foreground/5 px-3 text-sm
-                  text-foreground placeholder:text-foreground/30 focus-visible:border-accent
-                  focus-visible:outline-1 focus-visible:outline-accent"
+              className="h-11 w-full border border-foreground/15 bg-foreground/5
+              px-3 text-sm text-foreground placeholder:text-foreground/30
+              focus-visible:border-accent focus-visible:outline-1 focus-visible:outline-accent"
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="confirm-password"
-              className="text-xs font-medium text-foreground/60"
-            >
-              Confirm password
-            </label>
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="confirm-password"
+                className="text-xs font-medium text-foreground/60"
+              >
+                Confirm password
+              </label>
+
+              {errors.confirmPassword && (
+                <p className="text-xs text-red-500">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
             <input
+              {...register("confirmPassword")}
               id="confirm-password"
-              name="confirmPassword"
               type="password"
               autoComplete="new-password"
               placeholder="Confirm your password"
-              className="h-11 w-full border border-foreground/15 bg-foreground/5 px-3 text-sm
-                  text-foreground placeholder:text-foreground/30 focus-visible:border-accent
-                  focus-visible:outline-1 focus-visible:outline-accent"
+              className={`h-11 w-full border border-foreground/15 bg-foreground/5
+                px-3 text-sm text-foreground placeholder:text-foreground/30
+                focus-visible:border-accent focus-visible:outline-1 focus-visible:outline-accent`}
             />
           </div>
 
           <div className="pt-2">
             <button
               type="submit"
-              disabled={isPending}
-              className="flex h-11 w-full cursor-pointer items-center justify-center bg-plum
-                  px-4 text-sm font-medium text-background hover:bg-plum/90
-                  disabled:bg-foreground/10 disabled:text-foreground/30"
+              disabled={isSubmitting}
+              className={`h-11 w-full flex items-center justify-center px-4 text-sm
+                font-medium text-background bg-plum hover:bg-plum/90 disabled:bg-foreground/10
+                disabled:text-foreground/30 disabled:cursor-not-allowed cursor-pointer`}
             >
-              {isPending ? <LoadingSpinner /> : "Create account"}
+              {isSubmitting ? <LoadingSpinner /> : "Create account"}
             </button>
           </div>
         </form>
@@ -141,9 +209,9 @@ function AnalysePage() {
 
         <p className="pt-6 text-center text-sm text-foreground/50">
           Already have an account?{" "}
-          <a href="/login" className="text-foreground hover:text-plum">
+          <Link to="/login" className="text-foreground hover:text-plum">
             Log in
-          </a>
+          </Link>
         </p>
       </div>
     </main>
