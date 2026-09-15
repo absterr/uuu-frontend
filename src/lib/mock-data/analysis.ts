@@ -1,4 +1,4 @@
-import type { AnalyzeData, RiskLevel } from "../analyse-code";
+import type { AnalyzeData, RiskLevel } from "@/lib/types/analysis";
 
 export interface BulkFile {
   id: string;
