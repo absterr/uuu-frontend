@@ -1,13 +1,46 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import MockAppIcon from "@/components/icons/MockAppIcon";
+import { api } from "@/lib/api";
+import { loginSchema, type LoginForm } from "@/lib/schema/auth-schema";
 
 export const Route = createFileRoute("/_auth/login")({
   component: LoginPage,
 });
 
 function LoginPage() {
-  const isPending = false;
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginForm>({
+    resolver: zodResolver(loginSchema),
+    mode: "onBlur",
+  });
+
+  const onSubmit = async (data: LoginForm) => {
+    const toastId = toast.loading("Logging in...");
+
+    try {
+      await api("/auth/login", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      await navigate({ to: "/dashboard" });
+      toast.dismiss(toastId);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to log in", {
+        id: toastId,
+      });
+    }
+  };
 
   return (
     <main className="flex min-h-screen items-center justify-center px-4 py-8">
@@ -20,23 +53,32 @@ function LoginPage() {
           </h1>
         </header>
 
-        <form className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="email"
-              className="text-xs font-medium text-foreground/60"
-            >
-              Email
-            </label>
+            <div className="flex items-center justify-between gap-4">
+              <label
+                htmlFor="email"
+                className="text-xs font-medium text-foreground/60"
+              >
+                Email
+              </label>
+              {errors.email && (
+                <span className="text-[10px] text-red-500 md:text-xs">
+                  {errors.email.message}
+                </span>
+              )}
+            </div>
+
             <input
               id="email"
-              name="email"
               type="email"
               autoComplete="email"
               placeholder="Enter email address"
-              className="h-11 w-full border border-foreground/15 bg-foreground/5 px-3 text-sm
+              aria-invalid={!!errors.email}
+              {...register("email")}
+              className={`h-11 w-full border border-foreground/15 bg-foreground/5 px-3 text-sm
                 text-foreground placeholder:text-foreground/30 focus-visible:border-accent
-                focus-visible:outline-1 focus-visible:outline-accent"
+                focus-visible:outline-1 focus-visible:outline-accent`}
             />
           </div>
 
@@ -48,35 +90,45 @@ function LoginPage() {
               >
                 Password
               </label>
-              <a
-                href="/forgot-password"
-                className="text-xs text-foreground/40 hover:text-plum"
-              >
-                Forgot password?
-              </a>
+              {errors.password && (
+                <span className="text-[10px] text-red-500 md:text-xs">
+                  {errors.password.message}
+                </span>
+              )}
             </div>
 
             <input
               id="password"
-              name="password"
               type="password"
               autoComplete="current-password"
               placeholder="Enter password"
-              className="h-11 w-full border border-foreground/15 bg-foreground/5 px-3 text-sm
+              aria-invalid={!!errors.password}
+              {...register("password")}
+              className={`h-11 w-full border border-foreground/15 bg-foreground/5 px-3 text-sm
                 text-foreground placeholder:text-foreground/30 focus-visible:border-accent
-                focus-visible:outline-1 focus-visible:outline-accent"
+                focus-visible:outline-1 focus-visible:outline-accent`}
             />
+
+            <div className="flex justify-end">
+              <a
+                href="/forgot-password"
+                className="text-xs text-foreground/40 hover:text-plum xl:hover:underline"
+              >
+                Forgot password?
+              </a>
+            </div>
           </div>
 
           <div className="pt-2">
             <button
               type="submit"
-              disabled={isPending}
-              className="flex h-11 w-full cursor-pointer items-center justify-center bg-plum
+              disabled={isSubmitting}
+              className={`flex h-11 w-full cursor-pointer items-center justify-center bg-plum
                 px-4 text-sm font-medium text-background hover:bg-plum/90
-                disabled:bg-foreground/10 disabled:text-foreground/30"
+                disabled:cursor-not-allowed disabled:bg-foreground/10
+                disabled:text-foreground/30`}
             >
-              {isPending ? <LoadingSpinner /> : "Log in"}
+              {isSubmitting ? <LoadingSpinner /> : "Log in"}
             </button>
           </div>
         </form>

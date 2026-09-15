@@ -24,13 +24,13 @@ function SignupPage() {
     mode: "onBlur",
   });
 
-  const onSubmit = async ({ name, email, password }: SignupForm) => {
+  const onSubmit = async (data: SignupForm) => {
     const toastId = toast.loading("Creating your account...");
 
     try {
       await api("/auth/signup", {
         method: "POST",
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify(data),
       });
 
       toast.success("Account created. Check your email to verify it.", {
