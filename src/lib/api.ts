@@ -5,6 +5,7 @@ export async function api<T>(path: string, options?: RequestInit): Promise<T> {
     ...options,
     headers: {
       "Content-Type": "application/json",
+      credentials: "include",
       ...options?.headers,
     },
   });
