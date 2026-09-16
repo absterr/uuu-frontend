@@ -1,14 +1,15 @@
-import type { APIKey } from "@/lib/mock-data/api-keys";
+import type { APIKey } from "@/lib/types/api-keys";
 import { cn } from "@/lib/utils";
 
 interface Props {
   apiKey: APIKey;
   onRevoke: () => void;
+  onDelete: () => void;
 }
 
-export default function APIKeyRow({ apiKey, onRevoke }: Props) {
+export default function APIKeyRow({ apiKey, onRevoke, onDelete }: Props) {
   return (
-    <div className="flex flex-row gap-4 items-center justify-between border-b border-foreground/10 py-5">
+    <div className="flex flex-row items-center justify-between gap-4 border-b border-foreground/10 py-5">
       <div className="flex min-w-0 flex-col gap-2">
         <div className="flex items-center gap-3">
           <span className="text-sm font-medium text-foreground">
@@ -18,10 +19,10 @@ export default function APIKeyRow({ apiKey, onRevoke }: Props) {
           <span
             className={cn(
               "font-mono text-[10px] uppercase tracking-wider",
-              apiKey.status === "ACTIVE" ? "text-plum" : "text-foreground/30",
+              apiKey.active ? "text-plum" : "text-foreground/30"
             )}
           >
-            {apiKey.status}
+            {apiKey.active ? "ACTIVE" : "REVOKED"}
           </span>
         </div>
 
@@ -34,7 +35,7 @@ export default function APIKeyRow({ apiKey, onRevoke }: Props) {
         </span>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-end gap-6 sm:shrink-0">
+      <div className="flex flex-col items-end gap-6 sm:flex-row">
         <div className="flex gap-2">
           <div className="flex flex-col gap-1">
             <span className="font-mono text-[9px] uppercase tracking-wider text-foreground/30">
@@ -57,10 +58,10 @@ export default function APIKeyRow({ apiKey, onRevoke }: Props) {
 
         <button
           type="button"
-          onClick={apiKey.status === "ACTIVE" ? onRevoke : undefined}
+          onClick={apiKey.active ? onRevoke : onDelete}
           className="cursor-pointer text-xs text-foreground/40 hover:text-plum"
         >
-          {apiKey.status === "ACTIVE" ? "Revoke" : "Delete"}
+          {apiKey.active ? "Revoke" : "Delete"}
         </button>
       </div>
     </div>
