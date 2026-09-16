@@ -1,4 +1,4 @@
-import type { HistoryItem } from "@/lib/mock-data/history";
+import type { HistoryItem } from "@/lib/types/history";
 import { cn } from "@/lib/utils";
 import RiskBadge from "../RiskBadge";
 
@@ -40,6 +40,7 @@ export default function HistoryDetails({ item, onBack, className }: Props) {
               </span>
               <p className="text-sm leading-6">{item.summary}</p>
             </section>
+
             <section className="flex flex-col gap-2">
               <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
                 Explanation
@@ -48,6 +49,7 @@ export default function HistoryDetails({ item, onBack, className }: Props) {
                 {item.explanation}
               </p>
             </section>
+
             {item.risks.length > 0 && (
               <section className="flex flex-col gap-2">
                 <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
@@ -69,6 +71,7 @@ export default function HistoryDetails({ item, onBack, className }: Props) {
                 </ul>
               </section>
             )}
+
             <section className="flex flex-col gap-2">
               <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
                 Source
@@ -77,6 +80,7 @@ export default function HistoryDetails({ item, onBack, className }: Props) {
                 <code>{item.cobol_code}</code>
               </pre>
             </section>
+
             <section className="flex flex-col gap-2">
               <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
                 Python Equivalent

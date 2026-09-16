@@ -1,11 +1,11 @@
-import type { HistoryItem } from "@/lib/mock-data/history";
+import type { HistoryItem } from "@/lib/types/history";
 import { cn } from "@/lib/utils";
 import RiskBadge from "../RiskBadge";
 
 interface Props {
   items: HistoryItem[];
-  selectedId: number | null;
-  onSelect: (id: number) => void;
+  selectedId: string | null;
+  onSelect: (id: string) => void;
   className?: string;
 }
 
@@ -19,7 +19,7 @@ export default function HistoryList({
     <section
       className={cn(
         "min-h-0 min-w-0 flex-1 flex-col border-b border-foreground/10 lg:flex lg:border-r lg:border-b-0",
-        className,
+        className
       )}
     >
       <header className="flex items-center justify-between border-b border-foreground/10 px-4 py-3">
@@ -34,9 +34,10 @@ export default function HistoryList({
             <button
               type="button"
               onClick={() => onSelect(item.id)}
-              className={`flex w-full cursor-pointer flex-col gap-2 p-4 text-left hover:bg-foreground/5 ${
+              className={cn(
+                "flex w-full cursor-pointer flex-col gap-2 p-4 text-left hover:bg-foreground/5",
                 selectedId === item.id ? "bg-foreground/5" : ""
-              }`}
+              )}
             >
               <div className="flex items-center justify-between gap-3">
                 <span className="font-mono text-[10px] text-foreground/35">

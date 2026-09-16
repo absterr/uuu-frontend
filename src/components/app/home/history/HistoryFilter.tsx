@@ -1,4 +1,4 @@
-import type { RiskLevel } from "@/lib/analyse-code";
+import type { RiskLevel } from "@/lib/types/analysis";
 
 interface Props {
   search: string;

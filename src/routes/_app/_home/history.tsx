@@ -1,10 +1,13 @@
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import HistoryDetail from "@/components/app/home/history/HistoryDetails";
 import HistoryFilters from "@/components/app/home/history/HistoryFilter";
 import HistoryList from "@/components/app/home/history/HistoryList";
-import type { RiskLevel } from "@/lib/analyse-code";
-import { MOCK_HISTORY } from "@/lib/mock-data/history";
+import { api } from "@/lib/api";
+import type { RiskLevel } from "@/lib/types/analysis";
+import type { HistoryResponse } from "@/lib/types/history";
 
 export const Route = createFileRoute("/_app/_home/history")({
   component: HistoryPage,
@@ -13,19 +16,48 @@ export const Route = createFileRoute("/_app/_home/history")({
 function HistoryPage() {
   const [search, setSearch] = useState("");
   const [risk, setRisk] = useState<RiskLevel | "">("");
-  const [selectedId, setSelectedId] = useState<number | null>(
-    MOCK_HISTORY[0]?.id ?? null,
-  );
-  const items = MOCK_HISTORY.filter((item) => {
-    const query = search.toLowerCase();
-    return (
-      (!query ||
-        item.summary.toLowerCase().includes(query) ||
-        item.cobol_code.toLowerCase().includes(query)) &&
-      (!risk || item.risk_level === risk)
-    );
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ["history", { search, risk }],
+    queryFn: () => {
+      const params = new URLSearchParams();
+
+      if (search) params.set("search", search);
+      if (risk) params.set("risk", risk);
+
+      const query = params.toString();
+
+      return api<HistoryResponse>(`/history${query ? `?${query}` : ""}`);
+    },
+    placeholderData: keepPreviousData,
   });
-  const selected = MOCK_HISTORY.find((item) => item.id === selectedId) ?? null;
+
+  const items = data?.history ?? [];
+  const selected = items.find((item) => item.id === selectedId) ?? null;
+
+  useEffect(() => {
+    if (data) {
+      setSelectedId(data.history[0]?.id ?? null);
+    }
+  }, [data]);
+
+  if (isPending) {
+    return (
+      <main className="flex h-full items-center justify-center bg-background text-sm text-foreground/40">
+        Loading history...
+      </main>
+    );
+  }
+
+  if (isError) {
+    return (
+      <main className="flex h-full items-center justify-center bg-background text-sm text-red-500">
+        {error.message}
+      </main>
+    );
+  }
+
   const showDetail = selectedId !== null;
 
   return (
@@ -36,9 +68,10 @@ function HistoryPage() {
             Analysis History
           </h1>
           <span className="font-mono text-[10px] uppercase tracking-wider text-foreground/40">
-            {items.length} results
+            {data.total} results
           </span>
         </header>
+
         <div className="flex min-h-0 flex-1 flex-col border border-foreground/10">
           <HistoryFilters
             search={search}
@@ -46,19 +79,27 @@ function HistoryPage() {
             onSearch={setSearch}
             onRisk={setRisk}
           />
-          <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
-            <HistoryList
-              items={items}
-              selectedId={selectedId}
-              onSelect={setSelectedId}
-              className={showDetail ? "hidden" : "flex"}
-            />
-            <HistoryDetail
-              item={selected}
-              onBack={() => setSelectedId(null)}
-              className={showDetail ? "flex" : "hidden"}
-            />
-          </div>
+
+          {items.length === 0 ? (
+            <div className="flex flex-1 items-center justify-center text-sm text-foreground/40">
+              No analyses found.
+            </div>
+          ) : (
+            <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+              <HistoryList
+                items={items}
+                selectedId={selectedId}
+                onSelect={setSelectedId}
+                className={showDetail ? "hidden" : "flex"}
+              />
+
+              <HistoryDetail
+                item={selected}
+                onBack={() => setSelectedId(null)}
+                className={showDetail ? "flex" : "hidden"}
+              />
+            </div>
+          )}
         </div>
       </div>
     </main>
