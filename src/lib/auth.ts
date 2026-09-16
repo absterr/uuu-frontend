@@ -7,12 +7,16 @@ export function getAccessToken() {
 
 export function setAccessToken(token: string) {
   accessToken = token;
-  listeners.forEach((l) => l());
+  listeners.forEach((l) => {
+    l();
+  });
 }
 
 export function clearAccessToken() {
   accessToken = null;
-  listeners.forEach((l) => l());
+  listeners.forEach((l) => {
+    l();
+  });
 }
 
 export function subscribeAuth(callback: () => void) {

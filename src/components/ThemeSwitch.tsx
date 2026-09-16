@@ -1,6 +1,6 @@
 "use client";
-import { Root, Thumb } from "@radix-ui/react-switch";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import { Root, Thumb } from "@radix-ui/react-switch";
 import { useEffect, useState } from "react";
 
 import { useTheme } from "./theme-provider";

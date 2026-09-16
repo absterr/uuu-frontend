@@ -7,7 +7,7 @@ import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import MockAppIcon from "@/components/icons/MockAppIcon";
 import { api } from "@/lib/api";
 import { setAccessToken } from "@/lib/auth";
-import { loginSchema, type LoginForm } from "@/lib/schema/auth-schema";
+import { type LoginForm, loginSchema } from "@/lib/schema/auth-schema";
 
 export const Route = createFileRoute("/_auth/login")({
   component: LoginPage,
@@ -34,7 +34,7 @@ function LoginPage() {
         {
           method: "POST",
           body: JSON.stringify(data),
-        }
+        },
       );
 
       setAccessToken(result.session.access_token);

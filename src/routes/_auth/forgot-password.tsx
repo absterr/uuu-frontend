@@ -7,8 +7,8 @@ import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import MockAppIcon from "@/components/icons/MockAppIcon";
 import { api } from "@/lib/api";
 import {
-  forgotPasswordSchema,
   type ForgotPasswordForm,
+  forgotPasswordSchema,
 } from "@/lib/schema/auth-schema";
 
 export const Route = createFileRoute("/_auth/forgot-password")({
@@ -40,7 +40,7 @@ function ForgotPasswordPage() {
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Unable to send reset email",
-        { id: toastId }
+        { id: toastId },
       );
     }
   };

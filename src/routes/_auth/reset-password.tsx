@@ -7,8 +7,8 @@ import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import MockAppIcon from "@/components/icons/MockAppIcon";
 import { api } from "@/lib/api";
 import {
-  resetPasswordSchema,
   type ResetPasswordForm,
+  resetPasswordSchema,
 } from "@/lib/schema/auth-schema";
 
 export const Route = createFileRoute("/_auth/reset-password")({
@@ -48,7 +48,7 @@ function ResetPasswordPage() {
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Unable to reset password",
-        { id: toastId }
+        { id: toastId },
       );
     }
   };

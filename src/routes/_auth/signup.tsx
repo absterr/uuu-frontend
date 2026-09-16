@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import MockAppIcon from "@/components/icons/MockAppIcon";
 import { api } from "@/lib/api";
-import { signupSchema, type SignupForm } from "@/lib/schema/auth-schema";
+import { type SignupForm, signupSchema } from "@/lib/schema/auth-schema";
 
 export const Route = createFileRoute("/_auth/signup")({
   component: SignupPage,
@@ -43,7 +43,7 @@ function SignupPage() {
         error instanceof Error ? error.message : "Account creation failed",
         {
           id: toastId,
-        }
+        },
       );
     }
   };

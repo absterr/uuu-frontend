@@ -9,12 +9,12 @@ export const Route = createFileRoute("/_app/_home")({
 });
 
 function RouteComponent() {
-  const isAuth = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
     <SidebarProvider>
       <div className="flex h-full min-h-0 flex-1 overflow-hidden">
-        {isAuth && <Sidebar />}
+        {isAuthenticated && <Sidebar />}
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           <Outlet />
         </div>
