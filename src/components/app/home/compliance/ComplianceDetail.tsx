@@ -1,28 +1,38 @@
-import type { ComplianceReport } from "@/lib/mock-data/compliance";
+import type {
+  ComplianceReport,
+  ComplianceStandard,
+} from "@/lib/types/compliance";
 import { cn } from "@/lib/utils";
 
 interface Props {
   report: ComplianceReport | null;
+  standard: ComplianceStandard;
+  onStandardChange: (standard: ComplianceStandard) => void;
   onBack: () => void;
+  isLoading: boolean;
+  error: string | null;
   className?: string;
 }
 
-export default function ComplianceDetail({ report, onBack, className }: Props) {
-  if (!report) {
-    return (
-      <section
-        className={cn(
-          "min-h-0 flex-1 items-center justify-center p-6 lg:flex",
-          className,
-        )}
-      >
-        <p className="text-sm text-foreground/40">
-          Select a compliance report to view its details.
-        </p>
-      </section>
-    );
-  }
+const STANDARDS: {
+  value: ComplianceStandard;
+  label: string;
+}[] = [
+  { value: "SOX", label: "SOX" },
+  { value: "GDPR", label: "GDPR" },
+  { value: "HIPAA", label: "HIPAA" },
+  { value: "PCI", label: "PCI DSS" },
+];
 
+export default function ComplianceDetail({
+  report,
+  standard,
+  onStandardChange,
+  onBack,
+  isLoading,
+  error,
+  className,
+}: Props) {
   return (
     <section className={cn("min-h-0 flex-1 flex-col lg:flex", className)}>
       <header className="flex items-center gap-3 border-b border-foreground/10 px-4 py-3 md:px-6">
@@ -34,99 +44,164 @@ export default function ComplianceDetail({ report, onBack, className }: Props) {
         >
           ←
         </button>
+
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-foreground/40">
             Compliance
           </span>
+
           <h2 className="truncate text-sm font-medium">
-            {report.standard_name}
+            {report?.standard_name ?? "Compliance Report"}
           </h2>
         </div>
-        <span className="shrink-0 text-xs font-medium text-foreground/60">
-          {report.compliance_score}%
-        </span>
+
+        <select
+          value={standard}
+          onChange={(event) =>
+            onStandardChange(event.target.value as ComplianceStandard)
+          }
+          className={`border border-foreground/15 bg-background px-2 py-1 text-xs
+            text-foreground focus-visible:outline-1 focus-visible:outline-accent`}
+          aria-label="Compliance standard"
+        >
+          {STANDARDS.map((item) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+
+        {report && (
+          <span className="shrink-0 text-xs font-medium text-foreground/60">
+            {report.compliance_score}%
+          </span>
+        )}
       </header>
 
       <div className="min-h-0 flex-1 overflow-y-auto p-4 md:p-6">
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-1">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
-              Status
-            </span>
-            <p className="text-sm font-medium">
-              {report.compliance_status.replace("-", " ")}
-            </p>
-            <p className="text-sm text-foreground/60">
-              {report.status_message}
-            </p>
-          </div>
+        {isLoading && (
+          <p className="m-auto text-center font-mono text-xs uppercase tracking-widest text-foreground/40">
+            Generating report...
+          </p>
+        )}
 
-          <div className="flex flex-col gap-1">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
-              Summary
-            </span>
-            <p className="text-sm leading-6">{report.summary}</p>
-          </div>
+        {!isLoading && error && (
+          <p className="m-auto text-center text-sm text-plum">{error}</p>
+        )}
 
-          <div className="flex flex-col gap-2">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
-              Checks
-            </span>
-            <ul className="divide-y divide-foreground/10 border-y border-foreground/10">
-              {report.checks.map((check) => (
-                <li
-                  key={check.check}
-                  className="flex items-center justify-between gap-4 py-3 text-sm"
-                >
-                  <span>{check.check}</span>
-                  <span className="shrink-0 text-[10px] font-medium uppercase tracking-wider text-foreground/50">
-                    {check.status}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-foreground/40">
-              {report.passed_checks} / {report.total_checks} passed
-            </span>
-          </div>
+        {!isLoading && !error && !report && (
+          <p className="m-auto text-center text-sm text-foreground/40">
+            Select an analysis to generate a compliance report.
+          </p>
+        )}
 
-          {report.risks.length > 0 && (
+        {!isLoading && !error && report && (
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-1">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
+                Standard
+              </span>
+
+              <p className="text-sm font-medium">{report.standard_name}</p>
+
+              <p className="text-sm text-foreground/60">{report.description}</p>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
+                Status
+              </span>
+
+              <p className="text-sm font-medium">
+                {report.compliance_status.replace("-", " ")}
+              </p>
+
+              <p className="text-sm text-foreground/60">
+                {report.status_message}
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
+                Summary
+              </span>
+
+              <p className="text-sm leading-6">{report.summary}</p>
+            </div>
+
             <div className="flex flex-col gap-2">
               <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
-                Risks
+                Checks
               </span>
-              <ul className="flex flex-col gap-2">
-                {report.risks.map((risk) => (
+
+              <ul className="divide-y divide-foreground/10 border-y border-foreground/10">
+                {report.checks.map((check) => (
                   <li
-                    key={risk}
-                    className="flex items-center gap-2 text-sm text-foreground/70"
+                    key={check.check}
+                    className="flex items-center justify-between gap-4 py-3 text-sm"
                   >
-                    <span
-                      className="size-1 shrink-0 bg-accent"
-                      aria-hidden="true"
-                    />
-                    {risk}
+                    <span>{check.check}</span>
+
+                    <span className="shrink-0 text-[10px] font-medium uppercase tracking-wider text-foreground/50">
+                      {check.status}
+                    </span>
                   </li>
                 ))}
               </ul>
+
+              <span className="font-mono text-[10px] uppercase tracking-wider text-foreground/40">
+                {report.passed_checks} / {report.total_checks} passed
+              </span>
             </div>
-          )}
 
-          <button
-            type="button"
-            className="w-full cursor-pointer border border-foreground/15 px-3 py-2 text-xs font-medium text-foreground/70 hover:border-accent hover:text-plum"
-          >
-            Download PDF report ↗
-          </button>
+            {report.risks.length > 0 && (
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">
+                  Risks
+                </span>
 
-          <div className="flex flex-col gap-1 border-t border-foreground/10 pt-4 text-[10px] uppercase tracking-wider text-foreground/40">
-            <span>Analysis #{report.analysis_id}</span>
-            <span>Reviewed by {report.reviewed_by}</span>
-            <span>
-              Generated {new Date(report.generated_at).toLocaleDateString()}
-            </span>
+                <ul className="flex flex-col gap-2">
+                  {report.risks.map((risk) => (
+                    <li
+                      key={risk}
+                      className="flex items-center gap-2 text-sm text-foreground/70"
+                    >
+                      <span
+                        className="size-1 shrink-0 bg-accent"
+                        aria-hidden="true"
+                      />
+                      {risk}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <button
+              type="button"
+              className={`w-full cursor-pointer border border-foreground/15 px-3
+                py-2 text-xs font-medium text-foreground/70 hover:border-accent
+                hover:text-plum`}
+            >
+              Download PDF report ↗
+            </button>
+
+            <div
+              className={`flex flex-col gap-1 border-t border-foreground/10 pt-4
+                text-[10px] uppercase tracking-wider text-foreground/40`}
+            >
+              <span>Analysis #{report.analysis_id}</span>
+              <span>Reviewed by {report.reviewed_by}</span>
+              <span>
+                Generated {new Date(report.generated_at).toLocaleDateString()}
+              </span>
+            </div>
+
+            <p className="border-t border-foreground/10 pt-4 text-[10px] leading-4 text-foreground/40">
+              {report.disclaimer}
+            </p>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
