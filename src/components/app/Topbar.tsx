@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { ThemeSwitch } from "../ThemeSwitch";
 
 interface User {
   name: string;
@@ -32,7 +33,10 @@ export default function Topbar() {
     <header className="border-b border-foreground/10">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
         <span className="font-bold text-lg tracking-tight text-plum">UUU</span>
-        <UserNav user={user} />
+        <div className="flex items-center justify-between gap-x-6 md:gap-x-10">
+          <ThemeSwitch />
+          <UserNav user={user} />
+        </div>
       </div>
     </header>
   );
