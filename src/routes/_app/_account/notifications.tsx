@@ -1,31 +1,92 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import NotificationRow from "@/components/app/account/notifications/NotificationRow";
+import { api } from "@/lib/api";
+import type {
+  NotificationPreference,
+  NotificationPreferences,
+} from "@/lib/types/notifications";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_app/_account/notifications")({
   component: NotificationsPage,
 });
 
-const MOCK_NOTIFICATION_PREFS = {
-  email_high_risk: true,
-  email_bulk_done: true,
-  email_limit_warning: false,
-  email_team_joined: true,
-  inapp_high_risk: true,
-  inapp_bulk_done: true,
-  inapp_limit_warning: true,
-  inapp_team_joined: false,
+const QUERY_KEY = ["notification-preferences"];
+
+const getNotificationPreferences = () => {
+  return api<NotificationPreferences>("/notifications/preferences");
+};
+
+const updateNotificationPreference = (
+  key: NotificationPreference,
+  value: boolean
+) => {
+  return api<{ message: string; preferences: NotificationPreferences }>(
+    "/notifications/preferences",
+    {
+      method: "PUT",
+      body: JSON.stringify({ [key]: value }),
+    }
+  );
 };
 
 function NotificationsPage() {
-  const [prefs, setPrefs] = useState(MOCK_NOTIFICATION_PREFS);
+  const queryClient = useQueryClient();
 
-  const flip = (key: keyof typeof prefs) =>
-    setPrefs((current) => ({ ...current, [key]: !current[key] }));
+  const {
+    data: prefs,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: QUERY_KEY,
+    queryFn: getNotificationPreferences,
+  });
+
+  const mutation = useMutation({
+    mutationFn: ({
+      key,
+      value,
+    }: {
+      key: NotificationPreference;
+      value: boolean;
+    }) => updateNotificationPreference(key, value),
+
+    onMutate: async ({ key, value }) => {
+      await queryClient.cancelQueries({ queryKey: QUERY_KEY });
+
+      const previous =
+        queryClient.getQueryData<NotificationPreferences>(QUERY_KEY);
+
+      queryClient.setQueryData<NotificationPreferences>(QUERY_KEY, (current) =>
+        current ? { ...current, [key]: value } : current
+      );
+
+      return { previous };
+    },
+
+    onError: (_error, _variables, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(QUERY_KEY, context.previous);
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+    },
+  });
+
+  const flip = (key: NotificationPreference) => {
+    if (!prefs || mutation.isPending) return;
+
+    mutation.mutate({
+      key,
+      value: !prefs[key],
+    });
+  };
 
   return (
     <>
-      <header className="hidden lg:block border-b border-foreground/10 pb-4">
+      <header className="hidden border-b border-foreground/10 pb-4 lg:block">
         <h1 className="text-sm font-medium text-foreground/60">
           Notifications
         </h1>
@@ -41,63 +102,91 @@ function NotificationsPage() {
           </p>
         </div>
 
-        <section>
-          <h3 className="font-mono text-[10px] font-semibold uppercase tracking-wider text-foreground/40">
-            Email
-          </h3>
-          <div className="mt-2">
-            <NotificationRow
-              label="High-risk analysis detected"
-              description="Sent when an analysis returns a HIGH risk level."
-              checked={prefs.email_high_risk}
-              onChange={() => flip("email_high_risk")}
-            />
-            <NotificationRow
-              label="Bulk analysis finished"
-              checked={prefs.email_bulk_done}
-              onChange={() => flip("email_bulk_done")}
-            />
-            <NotificationRow
-              label="Usage limit warning"
-              description="Sent at 80% of your plan's monthly limit."
-              checked={prefs.email_limit_warning}
-              onChange={() => flip("email_limit_warning")}
-            />
-            <NotificationRow
-              label="Someone joined your team"
-              checked={prefs.email_team_joined}
-              onChange={() => flip("email_team_joined")}
-            />
-          </div>
-        </section>
+        {isLoading && (
+          <p className="text-xs text-foreground/40">Loading preferences...</p>
+        )}
 
-        <section>
-          <h3 className="font-mono text-[10px] font-semibold uppercase tracking-wider text-foreground/40">
-            In-app
-          </h3>
-          <div className="mt-2">
-            <NotificationRow
-              label="High-risk analysis detected"
-              checked={prefs.inapp_high_risk}
-              onChange={() => flip("inapp_high_risk")}
-            />
-            <NotificationRow
-              label="Bulk analysis finished"
-              checked={prefs.inapp_bulk_done}
-              onChange={() => flip("inapp_bulk_done")}
-            />
-            <NotificationRow
-              label="Usage limit warning"
-              checked={prefs.inapp_limit_warning}
-              onChange={() => flip("inapp_limit_warning")}
-            />
-            <NotificationRow
-              label="Someone joined your team"
-              checked={prefs.inapp_team_joined}
-              onChange={() => flip("inapp_team_joined")}
-            />
-          </div>
-        </section>
+        {isError && (
+          <p className="text-sm text-plum">
+            Failed to load notification preferences.
+          </p>
+        )}
+
+        {prefs && (
+          <>
+            <section>
+              <h3 className="font-mono text-[10px] font-semibold uppercase tracking-wider text-foreground/40">
+                Email
+              </h3>
+
+              <div className="mt-2">
+                <NotificationRow
+                  label="High-risk analysis detected"
+                  description="Sent when an analysis returns a HIGH risk level."
+                  checked={prefs.email_high_risk}
+                  onChange={() => flip("email_high_risk")}
+                />
+
+                <NotificationRow
+                  label="Bulk analysis finished"
+                  checked={prefs.email_bulk_done}
+                  onChange={() => flip("email_bulk_done")}
+                />
+
+                <NotificationRow
+                  label="Usage limit warning"
+                  description="Sent at 80% of your plan's monthly limit."
+                  checked={prefs.email_limit_warning}
+                  onChange={() => flip("email_limit_warning")}
+                />
+
+                <NotificationRow
+                  label="Someone joined your team"
+                  checked={prefs.email_team_joined}
+                  onChange={() => flip("email_team_joined")}
+                />
+              </div>
+            </section>
+
+            <section>
+              <h3 className="font-mono text-[10px] font-semibold uppercase tracking-wider text-foreground/40">
+                In-app
+              </h3>
+
+              <div className="mt-2">
+                <NotificationRow
+                  label="High-risk analysis detected"
+                  checked={prefs.inapp_high_risk}
+                  onChange={() => flip("inapp_high_risk")}
+                />
+
+                <NotificationRow
+                  label="Bulk analysis finished"
+                  checked={prefs.inapp_bulk_done}
+                  onChange={() => flip("inapp_bulk_done")}
+                />
+
+                <NotificationRow
+                  label="Usage limit warning"
+                  checked={prefs.inapp_limit_warning}
+                  onChange={() => flip("inapp_limit_warning")}
+                />
+
+                <NotificationRow
+                  label="Someone joined your team"
+                  checked={prefs.inapp_team_joined}
+                  onChange={() => flip("inapp_team_joined")}
+                />
+              </div>
+            </section>
+
+            {mutation.isError && (
+              <p className="text-xs text-plum">
+                Failed to save notification preference.
+              </p>
+            )}
+          </>
+        )}
       </div>
     </>
   );
