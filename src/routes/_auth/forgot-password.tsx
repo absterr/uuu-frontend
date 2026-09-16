@@ -26,21 +26,16 @@ function ForgotPasswordPage() {
   });
 
   const onSubmit = async (data: ForgotPasswordForm) => {
-    const toastId = toast.loading("Sending reset instructions...");
-
     try {
       await api("/auth/forgot-password", {
         method: "POST",
         body: JSON.stringify(data),
       });
 
-      toast.success("Reset instructions sent. Check your email.", {
-        id: toastId,
-      });
+      toast.success("Reset instructions sent. Check your email.");
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "Unable to send reset email",
-        { id: toastId },
+        error instanceof Error ? error.message : "Unable to send reset email"
       );
     }
   };

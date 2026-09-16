@@ -25,25 +25,18 @@ function SignupPage() {
   });
 
   const onSubmit = async (data: SignupForm) => {
-    const toastId = toast.loading("Creating your account...");
-
     try {
       await api("/auth/signup", {
         method: "POST",
         body: JSON.stringify(data),
       });
 
-      toast.success("Account created. Check your email to verify it.", {
-        id: toastId,
-      });
+      toast.success("Account created. Check your email to verify it.");
 
       await navigate({ to: "/login" });
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "Account creation failed",
-        {
-          id: toastId,
-        },
+        error instanceof Error ? error.message : "Account creation failed"
       );
     }
   };

@@ -15,3 +15,22 @@ export interface AnalyzeResponse {
   user: string;
   data: AnalyzeData;
 }
+
+export interface BulkFile {
+  id: string;
+  filename: string;
+  lines: number;
+  content: string;
+}
+
+export interface BulkResult {
+  filename: string;
+  status: "success" | "error";
+  data: AnalyzeData | null;
+  error: string | null;
+}
+
+export interface BulkAnalyzeResponse {
+  total: number;
+  results: BulkResult[];
+}

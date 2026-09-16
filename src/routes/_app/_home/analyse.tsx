@@ -8,53 +8,83 @@ import AnalyseToggle, {
 import AnalysisPanel from "@/components/app/home/analyse/AnalysisPanel";
 import CodeInputPanel from "@/components/app/home/analyse/CodeInputPanel";
 import PaneTabs from "@/components/app/home/PaneTabs";
+import { useAuth } from "@/hooks/use-auth";
 import { api } from "@/lib/api";
-import {
-  type BulkFile,
-  type BulkResultItem,
-  MOCK_BULK_FILES,
-  MOCK_BULK_RESULTS,
-  MOCK_SINGLE_CODE,
-  MOCK_SINGLE_RESULT,
-} from "@/lib/mock-data/analysis";
-import type { AnalyzeResponse } from "@/lib/types/analysis";
+import type {
+  AnalyzeResponse,
+  BulkAnalyzeResponse,
+  BulkFile,
+  BulkResult,
+} from "@/lib/types/analysis";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/_home/analyse")({
   component: AnalysePage,
 });
 
-const analyzeCode = (code: string) => {
-  return api<AnalyzeResponse>("/api/v1/analyse", {
+const BULK_PLANS = new Set(["professional", "team", "enterprise"]);
+
+const analyzeCode = (code: string) =>
+  api<AnalyzeResponse>("/analyse", {
     method: "POST",
     body: JSON.stringify({ code }),
   });
-};
 
-const INITIAL_SINGLE_RESPONSE: AnalyzeResponse = {
-  id: "mock-analysis",
-  user: "demo",
-  data: MOCK_SINGLE_RESULT,
-};
+const analyzeBulk = (files: BulkFile[]) =>
+  api<BulkAnalyzeResponse>("/analyse/bulk", {
+    method: "POST",
+    body: JSON.stringify({
+      files: files.map(({ filename, content }) => ({
+        filename,
+        code: content,
+      })),
+    }),
+  });
 
 function AnalysePage() {
+  const { isAuthenticated, user } = useAuth();
+
+  const canBulkAnalyze = isAuthenticated && BULK_PLANS.has(user?.plan ?? "");
+
   const [mode, setMode] = useState<AnalyseMode>("Single");
   const [pane, setPane] = useState<"input" | "output">("input");
-  const [input, setInput] = useState<string | BulkFile[]>(MOCK_SINGLE_CODE);
-  const [result, setResult] = useState<
-    AnalyzeResponse | BulkResultItem[] | null
-  >(INITIAL_SINGLE_RESPONSE);
+  const [input, setInput] = useState<string | BulkFile[]>("");
+  const [result, setResult] = useState<AnalyzeResponse | BulkResult[] | null>(
+    null
+  );
   const [error, setError] = useState<string | null>(null);
 
-  const analyzeMutation = useMutation({
-    mutationFn: analyzeCode,
+  const analyzeMutation = useMutation<
+    AnalyzeResponse | BulkAnalyzeResponse,
+    Error
+  >({
+    mutationFn: () => {
+      if (mode === "Single" && typeof input === "string") {
+        return analyzeCode(input);
+      }
+
+      if (mode === "Bulk" && Array.isArray(input)) {
+        return analyzeBulk(input);
+      }
+
+      throw new Error("Invalid analysis input.");
+    },
     onSuccess: (data) => {
-      setResult(data);
+      if ("results" in data) {
+        setResult(data.results);
+        toast.success("Bulk analysis completed.");
+      } else {
+        setResult(data);
+        toast.success("Analysis completed.");
+      }
+
       setError(null);
       setPane("output");
     },
-    onError: (error) => {
-      setError(error instanceof Error ? error.message : "Analysis failed.");
+    onError: (mutationError) => {
+      setError(mutationError.message);
       setPane("output");
+      toast.error(mutationError.message);
     },
   });
 
@@ -62,23 +92,19 @@ function AnalysePage() {
     setMode(newMode);
     setError(null);
     analyzeMutation.reset();
+    setResult(null);
+    setPane("input");
 
     if (newMode === "Single") {
-      setInput(MOCK_SINGLE_CODE);
-      setResult(INITIAL_SINGLE_RESPONSE);
+      setInput("");
     } else {
-      setInput(MOCK_BULK_FILES);
-      setResult(MOCK_BULK_RESULTS);
+      setInput([]);
     }
   }
 
   function handleAnalyze() {
-    if (typeof input !== "string") {
-      return;
-    }
-
     setError(null);
-    analyzeMutation.mutate(input);
+    analyzeMutation.mutate();
   }
 
   const isLoading = analyzeMutation.isPending;
@@ -93,7 +119,10 @@ function AnalysePage() {
           <h1 className="text-sm font-medium text-foreground/60">
             Analyse Code
           </h1>
-          <AnalyseToggle mode={mode} onModeChange={handleModeChange} />
+
+          {canBulkAnalyze && (
+            <AnalyseToggle mode={mode} onModeChange={handleModeChange} />
+          )}
         </div>
 
         <div className="flex min-h-0 flex-1 flex-col border border-foreground/10">

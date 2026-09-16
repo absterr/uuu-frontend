@@ -2,7 +2,7 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 import Sidebar from "@/components/app/home/Sidebar";
 import { SidebarProvider } from "@/components/app/home/SidebarProvider";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/_app/_home")({
   component: RouteComponent,

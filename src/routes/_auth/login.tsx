@@ -26,24 +26,19 @@ function LoginPage() {
   });
 
   const onSubmit = async (data: LoginForm) => {
-    const toastId = toast.loading("Logging in...");
-
     try {
       const result = await api<{ session: { access_token: string } }>(
         "/auth/login",
         {
           method: "POST",
           body: JSON.stringify(data),
-        },
+        }
       );
 
       setAccessToken(result.session.access_token);
       await navigate({ to: "/dashboard" });
-      toast.dismiss(toastId);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Unable to log in", {
-        id: toastId,
-      });
+      toast.error(error instanceof Error ? error.message : "Unable to log in");
     }
   };
 
