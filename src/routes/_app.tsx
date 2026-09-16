@@ -1,7 +1,16 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+
 import Topbar from "@/components/app/Topbar";
+import { getAccessToken } from "@/lib/auth";
 
 export const Route = createFileRoute("/_app")({
+  beforeLoad: ({ location }) => {
+    if (location.pathname === "/analyse") return;
+
+    if (!getAccessToken()) {
+      throw redirect({ to: "/login" });
+    }
+  },
   component: RouteComponent,
 });
 

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import MockAppIcon from "@/components/icons/MockAppIcon";
 import { api } from "@/lib/api";
+import { setAccessToken } from "@/lib/auth";
 import { loginSchema, type LoginForm } from "@/lib/schema/auth-schema";
 
 export const Route = createFileRoute("/_auth/login")({
@@ -28,11 +29,15 @@ function LoginPage() {
     const toastId = toast.loading("Logging in...");
 
     try {
-      await api("/auth/login", {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
+      const result = await api<{ session: { access_token: string } }>(
+        "/auth/login",
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+        }
+      );
 
+      setAccessToken(result.session.access_token);
       await navigate({ to: "/dashboard" });
       toast.dismiss(toastId);
     } catch (error) {
