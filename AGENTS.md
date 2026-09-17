@@ -8,7 +8,7 @@
   - `summary` / `explanation` — plain-language breakdown
   - `dependencies`, `data_flows`, complexity indicators
   - A code map (graph of program structure, renderable as Mermaid)
-- Stack: React 19 + TypeScript, Vite, TanStack Query, TanStack Router, Tailwind CSS v4.
+- Stack: React 19 + TypeScript, Vite, Tailwind CSS v4, TanStack Query, TanStack Router.
 - Code style/linting: Biome (no ESLint/Prettier). 2-space indent.
 
 ## Environment Setup & Run

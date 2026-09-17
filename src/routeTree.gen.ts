@@ -27,6 +27,7 @@ import { Route as AppHomeComplianceRouteImport } from './routes/_app/_home/compl
 import { Route as AppHomeDashboardRouteImport } from './routes/_app/_home/dashboard'
 import { Route as AppHomeHistoryRouteImport } from './routes/_app/_home/history'
 import { Route as AppHomeRiskScoreRouteImport } from './routes/_app/_home/risk-score'
+import { Route as AppHomeCodemapAnalysisIdRouteImport } from './routes/_app/_home/codemap.$analysisId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -114,6 +115,12 @@ const AppHomeRiskScoreRoute = AppHomeRiskScoreRouteImport.update({
   path: '/risk-score',
   getParentRoute: () => AppHomeRoute,
 } as any)
+const AppHomeCodemapAnalysisIdRoute =
+  AppHomeCodemapAnalysisIdRouteImport.update({
+    id: '/codemap/$analysisId',
+    path: '/codemap/$analysisId',
+    getParentRoute: () => AppHomeRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -130,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AppHomeDashboardRoute
   '/history': typeof AppHomeHistoryRoute
   '/risk-score': typeof AppHomeRiskScoreRoute
+  '/codemap/$analysisId': typeof AppHomeCodemapAnalysisIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -146,6 +154,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AppHomeDashboardRoute
   '/history': typeof AppHomeHistoryRoute
   '/risk-score': typeof AppHomeRiskScoreRoute
+  '/codemap/$analysisId': typeof AppHomeCodemapAnalysisIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -167,6 +176,7 @@ export interface FileRoutesById {
   '/_app/_home/dashboard': typeof AppHomeDashboardRoute
   '/_app/_home/history': typeof AppHomeHistoryRoute
   '/_app/_home/risk-score': typeof AppHomeRiskScoreRoute
+  '/_app/_home/codemap/$analysisId': typeof AppHomeCodemapAnalysisIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -185,6 +195,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/history'
     | '/risk-score'
+    | '/codemap/$analysisId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -201,6 +212,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/history'
     | '/risk-score'
+    | '/codemap/$analysisId'
   id:
     | '__root__'
     | '/'
@@ -221,6 +233,7 @@ export interface FileRouteTypes {
     | '/_app/_home/dashboard'
     | '/_app/_home/history'
     | '/_app/_home/risk-score'
+    | '/_app/_home/codemap/$analysisId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -357,6 +370,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHomeRiskScoreRouteImport
       parentRoute: typeof AppHomeRoute
     }
+    '/_app/_home/codemap/$analysisId': {
+      id: '/_app/_home/codemap/$analysisId'
+      path: '/codemap/$analysisId'
+      fullPath: '/codemap/$analysisId'
+      preLoaderRoute: typeof AppHomeCodemapAnalysisIdRouteImport
+      parentRoute: typeof AppHomeRoute
+    }
   }
 }
 
@@ -384,6 +404,7 @@ interface AppHomeRouteChildren {
   AppHomeDashboardRoute: typeof AppHomeDashboardRoute
   AppHomeHistoryRoute: typeof AppHomeHistoryRoute
   AppHomeRiskScoreRoute: typeof AppHomeRiskScoreRoute
+  AppHomeCodemapAnalysisIdRoute: typeof AppHomeCodemapAnalysisIdRoute
 }
 
 const AppHomeRouteChildren: AppHomeRouteChildren = {
@@ -392,6 +413,7 @@ const AppHomeRouteChildren: AppHomeRouteChildren = {
   AppHomeDashboardRoute: AppHomeDashboardRoute,
   AppHomeHistoryRoute: AppHomeHistoryRoute,
   AppHomeRiskScoreRoute: AppHomeRiskScoreRoute,
+  AppHomeCodemapAnalysisIdRoute: AppHomeCodemapAnalysisIdRoute,
 }
 
 const AppHomeRouteWithChildren =

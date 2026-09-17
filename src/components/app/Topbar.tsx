@@ -42,7 +42,7 @@ export default function Topbar() {
           {isAuthenticated && user ? (
             <UserNav user={user} />
           ) : (
-            <div className="flex items-center gap-6 md:gap-8">
+            <div className="flex items-center gap-4 md:gap-6">
               <Link
                 to="/login"
                 className={`bg-foreground/5 border border-foreground/10 px-3 py-2
