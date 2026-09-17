@@ -1,4 +1,5 @@
 import { api } from "./api";
+import type { RiskLevel } from "./types/analysis";
 import type { APIKeysResponse, CreateAPIKeyResponse } from "./types/api-keys";
 import type { HistoryResponse } from "./types/history";
 import type {
@@ -17,6 +18,10 @@ import type {
 
 export function getHistory() {
   return api<HistoryResponse>("/history");
+}
+
+export function getHistoryByRisk(risk: RiskLevel) {
+  return api<HistoryResponse>(`/history?risk=${risk}`);
 }
 
 // --- Risk ---
@@ -58,14 +63,14 @@ export function getNotificationPreferences() {
 
 export function updateNotificationPreference(
   key: NotificationPreference,
-  value: boolean
+  value: boolean,
 ) {
   return api<{ message: string; preferences: NotificationPreferences }>(
     "/notifications/preferences",
     {
       method: "PUT",
       body: JSON.stringify({ [key]: value }),
-    }
+    },
   );
 }
 

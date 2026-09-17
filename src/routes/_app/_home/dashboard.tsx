@@ -24,7 +24,7 @@ function DashboardPage() {
   const recentAnalyses = [...(historyQuery.data?.history ?? [])]
     .sort(
       (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     )
     .slice(0, 5);
 

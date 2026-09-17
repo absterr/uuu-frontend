@@ -1,8 +1,8 @@
-import type { MOCK_RISK_SCORE } from "@/lib/mock-data/risk-score";
+import type { RiskScoreResponse } from "@/lib/types/risk";
 import RiskBadge from "../RiskBadge";
 
 interface Props {
-  score: typeof MOCK_RISK_SCORE;
+  score: RiskScoreResponse;
 }
 
 export default function RiskOverview({ score }: Props) {
@@ -13,11 +13,22 @@ export default function RiskOverview({ score }: Props) {
           <span className="font-mono text-[10px] uppercase tracking-wider text-foreground/40">
             Overall risk
           </span>
-          <span className="text-4xl font-medium tracking-tight">
-            {score.overall_score}
-          </span>
+
+          <div className="flex items-end gap-2">
+            <span className="text-4xl font-medium tracking-tight">
+              {score.overall_score}
+            </span>
+            <span className="pb-1 font-mono text-xs text-foreground/40">
+              / 10
+            </span>
+          </div>
         </div>
-        <RiskBadge level={score.overall_level} />
+
+        {score.overall_level === "NONE" ? (
+          <span className="text-xs text-foreground/40">NO DATA</span>
+        ) : (
+          <RiskBadge level={score.overall_level} />
+        )}
       </div>
 
       <p className="text-sm leading-6 text-foreground/60">{score.message}</p>
