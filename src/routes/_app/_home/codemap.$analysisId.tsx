@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 import CodeMapCanvas from "@/components/app/home/codemap/CodemapCanvas";
-import type { CodeMapResponse } from "@/lib/types/codemap";
 import { api } from "@/lib/api";
+import type { CodeMapResponse } from "@/lib/types/codemap";
 
 export const Route = createFileRoute("/_app/_home/codemap/$analysisId")({
   component: CodeMapPage,

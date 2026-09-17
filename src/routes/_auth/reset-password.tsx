@@ -3,8 +3,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import AppIcon from "@/components/icons/AppIcon";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
-import MockAppIcon from "@/components/icons/MockAppIcon";
 import { api } from "@/lib/api";
 import {
   type ResetPasswordForm,
@@ -59,7 +59,7 @@ function ResetPasswordPage() {
     return (
       <main className="flex min-h-screen items-center justify-center px-4 py-8">
         <div className="w-full max-w-md px-6 py-12 text-center">
-          <MockAppIcon />
+          <AppIcon />
 
           <header>
             <h1 className="pb-2 text-2xl font-medium text-foreground md:text-3xl">
@@ -77,7 +77,7 @@ function ResetPasswordPage() {
   return (
     <main className="flex min-h-screen items-center justify-center px-4 py-8">
       <div className="w-full max-w-md px-6 py-12">
-        <MockAppIcon />
+        <AppIcon />
 
         <header className="pb-8 text-center">
           <h1 className="text-2xl font-medium text-foreground md:text-3xl">

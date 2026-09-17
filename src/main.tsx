@@ -30,7 +30,7 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <div className="flex min-h-screen items-center justify-center">
     <LoadingSpinner />
-  </div>
+  </div>,
 );
 
 async function bootstrap() {
@@ -41,7 +41,7 @@ async function bootstrap() {
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
-    </StrictMode>
+    </StrictMode>,
   );
 }
 

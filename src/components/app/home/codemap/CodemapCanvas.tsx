@@ -2,10 +2,10 @@ import {
   Background,
   BackgroundVariant,
   Controls,
-  MarkerType,
-  ReactFlow,
   type Edge,
+  MarkerType,
   type Node,
+  ReactFlow,
 } from "@xyflow/react";
 
 import type {
@@ -65,7 +65,7 @@ export default function CodeMapCanvas({ nodes, edges }: CodeMapCanvasProps) {
 
 const layoutNodes = (
   nodes: CodeMapNodeData[],
-  edges: CodeMapEdge[]
+  edges: CodeMapEdge[],
 ): FlowNode[] => {
   const incoming = new Map(nodes.map((node) => [node.id, 0]));
   const outgoing = new Map<string, string[]>();

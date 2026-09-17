@@ -161,7 +161,7 @@ const UserNav = ({ user }: { user: User }) => {
                 } catch (err) {
                   toast.error(
                     err instanceof Error ? err.message : "Logout failed.",
-                    { id: toastId }
+                    { id: toastId },
                   );
                 }
               }}

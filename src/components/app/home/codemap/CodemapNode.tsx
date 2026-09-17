@@ -1,4 +1,4 @@
-import { Handle, Position, type Node, type NodeProps } from "@xyflow/react";
+import { Handle, type Node, type NodeProps, Position } from "@xyflow/react";
 
 import type { CodeMapNode as CodeMapNodeData } from "@/lib/types/codemap";
 import { cn } from "@/lib/utils";
@@ -22,9 +22,8 @@ export default function CodeMapNode({ data, selected }: NodeProps<FlowNode>) {
     <div
       className={cn(
         "relative w-64 border bg-background shadow-sm transition-shadow",
-        selected ? "border-plum shadow-md" : "border-foreground/10"
+        selected ? "border-plum shadow-md" : "border-foreground/10",
       )}
-      aria-label={`${TYPE_LABELS[data.type]}: ${data.label}`}
     >
       {showTarget && (
         <Handle
