@@ -1,7 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 import CodeMapCanvas from "@/components/app/home/codemap/CodemapCanvas";
-import { getCodeMapMock } from "@/lib/mock-data/codemap";
+import type { CodeMapResponse } from "@/lib/types/codemap";
+import { api } from "@/lib/api";
 
 export const Route = createFileRoute("/_app/_home/codemap/$analysisId")({
   component: CodeMapPage,
@@ -9,7 +11,11 @@ export const Route = createFileRoute("/_app/_home/codemap/$analysisId")({
 
 function CodeMapPage() {
   const { analysisId } = Route.useParams();
-  const data = getCodeMapMock(analysisId);
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["codemap", analysisId],
+    queryFn: () => api<CodeMapResponse>(`/codemap/${analysisId}`),
+  });
 
   return (
     <main
@@ -35,7 +41,21 @@ function CodeMapPage() {
         </header>
 
         <section className="flex min-h-0 flex-1 flex-col border border-foreground/10">
-          {/* Request state markup goes here  */}
+          {isLoading && (
+            <div className="flex flex-1 items-center justify-center text-sm text-foreground/50">
+              Loading code map...
+            </div>
+          )}
+
+          {error && (
+            <div
+              className="flex flex-1 items-center justify-center px-6 text-center
+              text-sm text-red-600"
+              role="alert"
+            >
+              {error.message}
+            </div>
+          )}
           {data && <CodeMapCanvas nodes={data.nodes} edges={data.edges} />}
         </section>
       </div>
