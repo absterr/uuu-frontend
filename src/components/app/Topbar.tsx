@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+
+import { useAuth } from "@/hooks/use-auth";
 import { ThemeSwitch } from "../ThemeSwitch";
 
 interface User {
@@ -7,12 +9,6 @@ interface User {
   email: string;
   avatarUrl?: string | null;
 }
-
-const user = {
-  name: "Jordan Lee",
-  email: "jordan@example.com",
-  avatarUrl: null,
-};
 
 const navLinks = [
   { label: "Profile", to: "/profile" },
@@ -23,19 +19,43 @@ const navLinks = [
 
 const getInitials = (name: string) => {
   const parts = name.trim().split(/\s+/);
+
   return parts.length >= 2
     ? (parts[0][0] + parts[1][0]).toUpperCase()
     : parts[0].slice(0, 2).toUpperCase();
 };
 
 export default function Topbar() {
+  const { isAuthenticated, user } = useAuth();
+
   return (
     <header className="border-b border-foreground/10">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
-        <span className="font-bold text-lg tracking-tight text-plum">UUU</span>
-        <div className="flex items-center justify-between gap-x-6 md:gap-x-10">
+        <span className="text-lg font-bold tracking-tight text-plum">UUU</span>
+
+        <div className="flex items-center gap-x-6 md:gap-x-10">
           <ThemeSwitch />
-          <UserNav user={user} />
+
+          {isAuthenticated && user ? (
+            <UserNav user={user} />
+          ) : (
+            <div className="flex items-center gap-6 md:gap-8">
+              <Link
+                to="/login"
+                className={`bg-foreground/5 border border-foreground/10 px-3 py-2
+                  text-xs font-medium text-foreground/80 hover:bg-foreground/10 hover:text-foreground`}
+              >
+                Log in
+              </Link>
+
+              <Link
+                to="/signup"
+                className="bg-plum px-3 py-2 text-xs font-medium text-background hover:bg-plum/90"
+              >
+                Sign up
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </header>
@@ -48,14 +68,20 @@ const UserNav = ({ user }: { user: User }) => {
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node))
+      if (ref.current && !ref.current.contains(e.target as Node)) {
         setIsOpen(false);
+      }
     }
+
     function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setIsOpen(false);
+      if (e.key === "Escape") {
+        setIsOpen(false);
+      }
     }
+
     document.addEventListener("mousedown", handleClick);
     document.addEventListener("keydown", handleKey);
+
     return () => {
       document.removeEventListener("mousedown", handleClick);
       document.removeEventListener("keydown", handleKey);
@@ -66,16 +92,18 @@ const UserNav = ({ user }: { user: User }) => {
     <div ref={ref} className="relative">
       <button
         type="button"
-        onClick={() => setIsOpen((v) => !v)}
+        onClick={() => setIsOpen((value) => !value)}
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-label="Open account menu"
-        className={`flex size-8 rounded-full cursor-pointer items-center justify-center
-          border border-foreground/15 bg-foreground/5 text-xs font-medium text-foreground/70
-          hover:border-accent hover:text-plum`}
+        className="flex size-8 cursor-pointer items-center justify-center rounded-full border border-foreground/15 bg-foreground/5 text-xs font-medium text-foreground/70 hover:border-accent hover:text-plum"
       >
         {user.avatarUrl ? (
-          <img src={user.avatarUrl} alt="" className="size-full object-cover" />
+          <img
+            src={user.avatarUrl}
+            alt=""
+            className="size-full rounded-full object-cover"
+          />
         ) : (
           getInitials(user.name)
         )}
@@ -94,6 +122,7 @@ const UserNav = ({ user }: { user: User }) => {
               {user.email}
             </span>
           </div>
+
           <div className="border-t border-foreground/10 py-1">
             {navLinks.map((link) => (
               <Link
@@ -107,6 +136,7 @@ const UserNav = ({ user }: { user: User }) => {
               </Link>
             ))}
           </div>
+
           <div className="border-t border-foreground/10 py-1">
             <button
               type="button"
