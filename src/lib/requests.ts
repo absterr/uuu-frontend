@@ -1,6 +1,7 @@
 import { api } from "./api";
 import type { RiskLevel } from "./types/analysis";
 import type { APIKeysResponse, CreateAPIKeyResponse } from "./types/api-keys";
+import type { AskHistoryResponse, AskQuestionResponse } from "./types/ask";
 import type { HistoryResponse } from "./types/history";
 import type {
   NotificationPreference,
@@ -13,6 +14,19 @@ import type {
   TeamMembersResponse,
   TeamsResponse,
 } from "./types/teams";
+
+// --- Analyse (Ask) ---
+
+export function askQuestion(analysisId: string, question: string) {
+  return api<AskQuestionResponse>(`/analyse/${analysisId}/ask`, {
+    method: "POST",
+    body: JSON.stringify({ question }),
+  });
+}
+
+export function getAskHistory(analysisId: string) {
+  return api<AskHistoryResponse>(`/analyse/${analysisId}/ask/history`);
+}
 
 // --- History ---
 
@@ -63,14 +77,14 @@ export function getNotificationPreferences() {
 
 export function updateNotificationPreference(
   key: NotificationPreference,
-  value: boolean,
+  value: boolean
 ) {
   return api<{ message: string; preferences: NotificationPreferences }>(
     "/notifications/preferences",
     {
       method: "PUT",
       body: JSON.stringify({ [key]: value }),
-    },
+    }
   );
 }
 

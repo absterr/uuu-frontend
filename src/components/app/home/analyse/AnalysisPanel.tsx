@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { AnalyzeResponse, BulkResult } from "@/lib/types/analysis";
 import { cn } from "@/lib/utils";
 import RiskBadge from "../RiskBadge";
+import AskQuestions from "./AskQuestions";
 
 interface Props {
   result: AnalyzeResponse | BulkResult[] | null;
@@ -165,6 +166,8 @@ export default function AnalysisPanel({
               >
                 View code map →
               </button>
+
+              <AskQuestions analysisId={result.id} />
             </div>
           ))}
       </div>
