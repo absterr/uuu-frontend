@@ -1,15 +1,29 @@
 import { api } from "./api";
 import type { APIKeysResponse, CreateAPIKeyResponse } from "./types/api-keys";
+import type { HistoryResponse } from "./types/history";
 import type {
   NotificationPreference,
   NotificationPreferences,
 } from "./types/notifications";
+import type { RiskScoreResponse } from "./types/risk";
 import type {
   CreateTeamResponse,
   InviteResponse,
   TeamMembersResponse,
   TeamsResponse,
 } from "./types/teams";
+
+// --- History ---
+
+export function getHistory() {
+  return api<HistoryResponse>("/history");
+}
+
+// --- Risk ---
+
+export function getRiskScore() {
+  return api<RiskScoreResponse>("/risk/score");
+}
 
 // --- API Keys ---
 
@@ -44,14 +58,14 @@ export function getNotificationPreferences() {
 
 export function updateNotificationPreference(
   key: NotificationPreference,
-  value: boolean,
+  value: boolean
 ) {
   return api<{ message: string; preferences: NotificationPreferences }>(
     "/notifications/preferences",
     {
       method: "PUT",
       body: JSON.stringify({ [key]: value }),
-    },
+    }
   );
 }
 
