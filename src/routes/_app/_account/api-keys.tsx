@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import APIKeyRow from "@/components/app/account/api-keys/APIKeyRows";
+import { useAuth } from "@/hooks/use-auth";
 import {
   createAPIKey,
   deleteAPIKey,
@@ -17,9 +18,11 @@ export const Route = createFileRoute("/_app/_account/api-keys")({
 
 function ApiKeysPage() {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
   const [newKeyName, setNewKeyName] = useState("");
   const [createdKey, setCreatedKey] = useState<string | null>(null);
 
+  const isEnterprise = user?.plan === "enterprise";
   const apiKeysQuery = useQuery({
     queryKey: ["api-keys"],
     queryFn: getAPIKeys,
@@ -84,27 +87,44 @@ function ApiKeysPage() {
               </p>
             </div>
 
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={newKeyName}
-                onChange={(event) => setNewKeyName(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") handleCreate();
-                }}
-                placeholder="Key name"
-                className="w-28 border border-foreground/15 bg-foreground/5 px-3 py-2 text-xs text-foreground outline-none focus:border-accent"
-              />
+            {isEnterprise ? (
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newKeyName}
+                  onChange={(event) => setNewKeyName(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") handleCreate();
+                  }}
+                  placeholder="Key name"
+                  className={`w-28 border border-foreground/15 bg-foreground/5 px-3
+                    py-2 text-xs text-foreground outline-none focus:border-accent`}
+                />
 
-              <button
-                type="button"
-                onClick={handleCreate}
-                disabled={!newKeyName.trim() || createMutation.isPending}
-                className="shrink-0 cursor-pointer bg-plum px-3 py-2 text-xs font-medium text-background hover:bg-plum/90 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {createMutation.isPending ? "Creating..." : "Create key"}
-              </button>
-            </div>
+                <button
+                  type="button"
+                  onClick={handleCreate}
+                  disabled={!newKeyName.trim() || createMutation.isPending}
+                  className={`shrink-0 cursor-pointer bg-plum px-3 py-2 text-xs font-medium
+                    text-background hover:bg-plum/90 disabled:cursor-not-allowed disabled:opacity-50`}
+                >
+                  {createMutation.isPending ? "Creating..." : "Create key"}
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <p className="text-xs text-foreground/50">
+                  API keys are available on the Enterprise plan.
+                </p>
+
+                <button
+                  type="button"
+                  className="shrink-0 bg-plum px-3 py-2 text-xs font-medium text-background"
+                >
+                  Upgrade
+                </button>
+              </div>
+            )}
           </div>
 
           {createdKey && (
