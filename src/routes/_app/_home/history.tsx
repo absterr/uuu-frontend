@@ -3,7 +3,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import HistoryDetail from "@/components/app/home/history/HistoryDetails";
-import HistoryFilters from "@/components/app/home/history/HistoryFilter";
+import HistoryFilters, {
+  type HistoryDateFilter,
+} from "@/components/app/home/history/HistoryFilter";
 import HistoryList from "@/components/app/home/history/HistoryList";
 import { api } from "@/lib/api";
 import type { RiskLevel } from "@/lib/types/analysis";
@@ -16,6 +18,7 @@ export const Route = createFileRoute("/_app/_home/history")({
 function HistoryPage() {
   const [search, setSearch] = useState("");
   const [risk, setRisk] = useState<RiskLevel | "">("");
+  const [date, setDate] = useState<HistoryDateFilter>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const { data, isPending, isError, error } = useQuery({
@@ -33,14 +36,33 @@ function HistoryPage() {
     placeholderData: keepPreviousData,
   });
 
-  const items = data?.history ?? [];
-  const selected = items.find((item) => item.id === selectedId) ?? null;
+  const history = data?.history ?? [];
+
+  const filteredItems = history.filter((item) => {
+    if (date === "all") return true;
+
+    const createdAt = new Date(item.created_at);
+
+    if (date === "today") {
+      const startOfToday = new Date();
+      startOfToday.setHours(0, 0, 0, 0);
+
+      return createdAt >= startOfToday;
+    }
+
+    const days = date === "7d" ? 7 : 30;
+    const cutoff = new Date();
+
+    cutoff.setDate(cutoff.getDate() - days);
+
+    return createdAt >= cutoff;
+  });
+
+  const selected = filteredItems.find((item) => item.id === selectedId) ?? null;
 
   useEffect(() => {
-    if (data) {
-      setSelectedId(data.history[0]?.id ?? null);
-    }
-  }, [data]);
+    setSelectedId(filteredItems[0]?.id ?? null);
+  }, [data, date]);
 
   if (isPending) {
     return (
@@ -67,8 +89,9 @@ function HistoryPage() {
           <h1 className="text-sm font-medium text-foreground/60">
             Analysis History
           </h1>
+
           <span className="font-mono text-[10px] uppercase tracking-wider text-foreground/40">
-            {data.total} results
+            {filteredItems.length} results
           </span>
         </header>
 
@@ -76,18 +99,20 @@ function HistoryPage() {
           <HistoryFilters
             search={search}
             risk={risk}
+            date={date}
             onSearch={setSearch}
             onRisk={setRisk}
+            onDate={setDate}
           />
 
-          {items.length === 0 ? (
+          {filteredItems.length === 0 ? (
             <div className="flex flex-1 items-center justify-center text-sm text-foreground/40">
               No analyses found.
             </div>
           ) : (
             <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
               <HistoryList
-                items={items}
+                items={filteredItems}
                 selectedId={selectedId}
                 onSelect={setSelectedId}
                 className={showDetail ? "hidden" : "flex"}

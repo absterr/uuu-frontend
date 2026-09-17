@@ -2,6 +2,7 @@ import { api } from "./api";
 import type { RiskLevel } from "./types/analysis";
 import type { APIKeysResponse, CreateAPIKeyResponse } from "./types/api-keys";
 import type { AskHistoryResponse, AskQuestionResponse } from "./types/ask";
+import type { AddCommentResponse, CommentsResponse } from "./types/comments";
 import type { HistoryResponse } from "./types/history";
 import type {
   NotificationPreference,
@@ -36,6 +37,19 @@ export function getHistory() {
 
 export function getHistoryByRisk(risk: RiskLevel) {
   return api<HistoryResponse>(`/history?risk=${risk}`);
+}
+
+// --- Comments ---
+
+export function getComments(analysisId: string) {
+  return api<CommentsResponse>(`/teams/analyses/${analysisId}/comments`);
+}
+
+export function addComment(analysisId: string, comment: string) {
+  return api<AddCommentResponse>(`/teams/analyses/${analysisId}/comments`, {
+    method: "POST",
+    body: JSON.stringify({ comment }),
+  });
 }
 
 // --- Risk ---
