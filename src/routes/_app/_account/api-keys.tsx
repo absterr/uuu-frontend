@@ -1,15 +1,15 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { toast } from "sonner";
+
+import APIKeyRow from "@/components/app/account/api-keys/APIKeyRows";
 import {
   createAPIKey,
   deleteAPIKey,
   getAPIKeys,
   revokeAPIKey,
 } from "@/lib/requests";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-
-import APIKeyRow from "@/components/app/account/api-keys/APIKeyRows";
-import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/_account/api-keys")({
   component: ApiKeysPage,

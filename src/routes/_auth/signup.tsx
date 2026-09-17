@@ -36,7 +36,7 @@ function SignupPage() {
       await navigate({ to: "/login" });
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "Account creation failed"
+        error instanceof Error ? error.message : "Account creation failed",
       );
     }
   };

@@ -18,7 +18,7 @@ export default function ComplianceList({
     <section
       className={cn(
         "min-h-0 flex-1 flex-col border-b border-foreground/10 lg:flex lg:border-r lg:border-b-0",
-        className
+        className,
       )}
     >
       <header className="border-b border-foreground/10 px-4 py-3 md:px-6">
@@ -37,7 +37,7 @@ export default function ComplianceList({
                 "flex w-full cursor-pointer items-center justify-between gap-3 border-b border-foreground/10 px-4 py-4 text-left md:px-6 ",
                 selectedId === analysis.id
                   ? "bg-foreground/5"
-                  : "hover:bg-foreground/5"
+                  : "hover:bg-foreground/5",
               )}
             >
               <div className="flex min-w-0 flex-col gap-1">

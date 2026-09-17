@@ -1,3 +1,5 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 import NotificationRow from "@/components/app/account/notifications/NotificationRow";
 import {
   getNotificationPreferences,
@@ -7,8 +9,6 @@ import type {
   NotificationPreference,
   NotificationPreferences,
 } from "@/lib/types/notifications";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_app/_account/notifications")({
   component: NotificationsPage,
@@ -44,7 +44,7 @@ function NotificationsPage() {
         queryClient.getQueryData<NotificationPreferences>(QUERY_KEY);
 
       queryClient.setQueryData<NotificationPreferences>(QUERY_KEY, (current) =>
-        current ? { ...current, [key]: value } : current
+        current ? { ...current, [key]: value } : current,
       );
 
       return { previous };

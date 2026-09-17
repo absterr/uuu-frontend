@@ -20,10 +20,10 @@ const fetchHistory = () => api<HistoryResponse>("/history");
 
 const fetchComplianceReport = (
   analysisId: string,
-  standard: ComplianceStandard
+  standard: ComplianceStandard,
 ) =>
   api<ComplianceReportResponse>(
-    `/compliance/${analysisId}?standard=${standard}`
+    `/compliance/${analysisId}?standard=${standard}`,
   );
 
 function CompliancePage() {

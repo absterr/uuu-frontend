@@ -4,6 +4,14 @@ import type {
   NotificationPreference,
   NotificationPreferences,
 } from "./types/notifications";
+import type {
+  CreateTeamResponse,
+  InviteResponse,
+  TeamMembersResponse,
+  TeamsResponse,
+} from "./types/teams";
+
+// --- API Keys ---
 
 export function getAPIKeys() {
   return api<APIKeysResponse>("/apikeys");
@@ -28,19 +36,44 @@ export function deleteAPIKey(id: string) {
   });
 }
 
+// --- Notifications ---
+
 export function getNotificationPreferences() {
   return api<NotificationPreferences>("/notifications/preferences");
 }
 
 export function updateNotificationPreference(
   key: NotificationPreference,
-  value: boolean
+  value: boolean,
 ) {
   return api<{ message: string; preferences: NotificationPreferences }>(
     "/notifications/preferences",
     {
       method: "PUT",
       body: JSON.stringify({ [key]: value }),
-    }
+    },
   );
+}
+
+// --- Teams ---
+
+export function getTeams() {
+  return api<TeamsResponse>("/teams");
+}
+
+export function getTeamMembers(teamId: string) {
+  return api<TeamMembersResponse>(`/teams/${teamId}/members`);
+}
+
+export function createTeam(name: string) {
+  return api<CreateTeamResponse>("/teams", {
+    method: "POST",
+    body: JSON.stringify({ name }),
+  });
+}
+
+export function generateTeamInvite(teamId: string) {
+  return api<InviteResponse>(`/teams/${teamId}/invites`, {
+    method: "POST",
+  });
 }

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-
+import { toast } from "sonner";
 import AnalyseToggle, {
   type AnalyseMode,
 } from "@/components/app/home/analyse/AnalyseToggle";
@@ -16,7 +16,6 @@ import type {
   BulkFile,
   BulkResult,
 } from "@/lib/types/analysis";
-import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/_home/analyse")({
   component: AnalysePage,
@@ -50,7 +49,7 @@ function AnalysePage() {
   const [pane, setPane] = useState<"input" | "output">("input");
   const [input, setInput] = useState<string | BulkFile[]>("");
   const [result, setResult] = useState<AnalyzeResponse | BulkResult[] | null>(
-    null
+    null,
   );
   const [error, setError] = useState<string | null>(null);
 

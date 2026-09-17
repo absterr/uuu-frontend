@@ -1,4 +1,4 @@
-import type { RiskLevel } from "@/lib/analyse-code";
+import type { RiskLevel } from "@/lib/types/analysis";
 
 const RISK_STYLES: Record<RiskLevel, string> = {
   HIGH: "bg-accent/10 text-plum",
@@ -15,7 +15,8 @@ export default function RiskBadge({ level }: RiskBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-2 border border-current/15 px-2.5 py-1 text-[10px] font-medium uppercase tracking-widest ${RISK_STYLES[level]}`}
+      className={`inline-flex items-center gap-2 border border-current/15 px-2.5
+        py-1 text-[10px] font-medium uppercase tracking-widest ${RISK_STYLES[level]}`}
     >
       <span className="size-1.5 bg-current rounded-full" aria-hidden="true" />
       {label} risk

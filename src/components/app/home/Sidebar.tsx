@@ -3,7 +3,6 @@ import {
   ClockIcon,
   DocumentMagnifyingGlassIcon,
   ExclamationTriangleIcon,
-  MapIcon,
   ShieldCheckIcon,
   Squares2X2Icon,
 } from "@heroicons/react/24/outline";
@@ -17,7 +16,6 @@ const sidebarNav = [
   { label: "History", to: "/history", icon: ClockIcon },
   { label: "Risk score", to: "/risk-score", icon: ExclamationTriangleIcon },
   { label: "Compliance", to: "/compliance", icon: ShieldCheckIcon },
-  { label: "Code map", to: "/codemap", icon: MapIcon },
 ];
 
 export default function Sidebar() {

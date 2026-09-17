@@ -32,7 +32,7 @@ function LoginPage() {
         {
           method: "POST",
           body: JSON.stringify(data),
-        }
+        },
       );
 
       setAccessToken(result.session.access_token);
