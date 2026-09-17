@@ -1,5 +1,8 @@
 import NotificationRow from "@/components/app/account/notifications/NotificationRow";
-import { api } from "@/lib/api";
+import {
+  getNotificationPreferences,
+  updateNotificationPreference,
+} from "@/lib/requests";
 import type {
   NotificationPreference,
   NotificationPreferences,
@@ -12,23 +15,6 @@ export const Route = createFileRoute("/_app/_account/notifications")({
 });
 
 const QUERY_KEY = ["notification-preferences"];
-
-const getNotificationPreferences = () => {
-  return api<NotificationPreferences>("/notifications/preferences");
-};
-
-const updateNotificationPreference = (
-  key: NotificationPreference,
-  value: boolean
-) => {
-  return api<{ message: string; preferences: NotificationPreferences }>(
-    "/notifications/preferences",
-    {
-      method: "PUT",
-      body: JSON.stringify({ [key]: value }),
-    }
-  );
-};
 
 function NotificationsPage() {
   const queryClient = useQueryClient();

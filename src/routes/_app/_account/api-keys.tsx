@@ -1,13 +1,15 @@
-import { api } from "@/lib/api";
-import type {
-  APIKeysResponse,
-  CreateAPIKeyResponse,
-} from "@/lib/types/api-keys";
+import {
+  createAPIKey,
+  deleteAPIKey,
+  getAPIKeys,
+  revokeAPIKey,
+} from "@/lib/requests";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import APIKeyRow from "@/components/app/account/api-keys/APIKeyRows";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/_account/api-keys")({
   component: ApiKeysPage,
@@ -29,6 +31,10 @@ function ApiKeysPage() {
       setNewKeyName("");
       setCreatedKey(data.api_key.key);
       queryClient.invalidateQueries({ queryKey: ["api-keys"] });
+      toast.success("API key created.");
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 
@@ -36,6 +42,10 @@ function ApiKeysPage() {
     mutationFn: revokeAPIKey,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["api-keys"] });
+      toast.success("API key revoked.");
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 
@@ -43,6 +53,10 @@ function ApiKeysPage() {
     mutationFn: deleteAPIKey,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["api-keys"] });
+      toast.success("API key deleted.");
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 
@@ -129,27 +143,4 @@ function ApiKeysPage() {
       </div>
     </>
   );
-}
-
-export function getAPIKeys() {
-  return api<APIKeysResponse>("/apikeys");
-}
-
-export function createAPIKey(name: string) {
-  return api<CreateAPIKeyResponse>("/apikeys", {
-    method: "POST",
-    body: JSON.stringify({ name }),
-  });
-}
-
-export function revokeAPIKey(id: string) {
-  return api<{ message: string }>(`/apikeys/${id}/revoke`, {
-    method: "PUT",
-  });
-}
-
-export function deleteAPIKey(id: string) {
-  return api<{ message: string }>(`/apikeys/${id}`, {
-    method: "DELETE",
-  });
 }
