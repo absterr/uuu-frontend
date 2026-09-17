@@ -60,9 +60,11 @@ function HistoryPage() {
 
   const selected = filteredItems.find((item) => item.id === selectedId) ?? null;
 
+  const firstFilteredId = filteredItems[0]?.id;
+
   useEffect(() => {
-    setSelectedId(filteredItems[0]?.id ?? null);
-  }, [data, date]);
+    setSelectedId(firstFilteredId ?? null);
+  }, [firstFilteredId]);
 
   if (isPending) {
     return (

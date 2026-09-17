@@ -91,14 +91,14 @@ export function getNotificationPreferences() {
 
 export function updateNotificationPreference(
   key: NotificationPreference,
-  value: boolean
+  value: boolean,
 ) {
   return api<{ message: string; preferences: NotificationPreferences }>(
     "/notifications/preferences",
     {
       method: "PUT",
       body: JSON.stringify({ [key]: value }),
-    }
+    },
   );
 }
 
