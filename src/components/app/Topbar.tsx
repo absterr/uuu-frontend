@@ -1,7 +1,10 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 import { useAuth } from "@/hooks/use-auth";
+import { api } from "@/lib/api";
+import { clearSession } from "@/lib/auth";
 import { ThemeSwitch } from "../ThemeSwitch";
 
 interface User {
@@ -65,6 +68,7 @@ export default function Topbar() {
 const UserNav = ({ user }: { user: User }) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -141,7 +145,26 @@ const UserNav = ({ user }: { user: User }) => {
             <button
               type="button"
               role="menuitem"
-              onClick={() => setIsOpen(false)}
+              onClick={async () => {
+                setIsOpen(false);
+                const toastId = toast.loading("Logging out...");
+
+                try {
+                  await api("/auth/logout", {
+                    method: "POST",
+                  });
+
+                  clearSession();
+                  await navigate({ to: "/login" });
+                  toast.dismiss(toastId);
+                  toast.success("Logged out successfully.");
+                } catch (err) {
+                  toast.error(
+                    err instanceof Error ? err.message : "Logout failed.",
+                    { id: toastId }
+                  );
+                }
+              }}
               className="block w-full cursor-pointer px-4 py-2 text-left text-sm text-foreground/70 hover:bg-foreground/5 hover:text-plum"
             >
               Log out
