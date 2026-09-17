@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import LoadingSpinner from "@/components/icons/LoadingSpinner";
 import MockAppIcon from "@/components/icons/MockAppIcon";
 import { api } from "@/lib/api";
-import { setAccessToken } from "@/lib/auth";
+import { setSession } from "@/lib/auth";
 import { type LoginForm, loginSchema } from "@/lib/schema/auth-schema";
 
 export const Route = createFileRoute("/_auth/login")({
@@ -27,15 +27,14 @@ function LoginPage() {
 
   const onSubmit = async (data: LoginForm) => {
     try {
-      const result = await api<{ session: { access_token: string } }>(
-        "/auth/login",
-        {
-          method: "POST",
-          body: JSON.stringify(data),
-        },
-      );
+      const result = await api<{
+        session: { access_token: string; refresh_token: string };
+      }>("/auth/login", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
 
-      setAccessToken(result.session.access_token);
+      setSession(result.session);
       await navigate({ to: "/dashboard" });
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Unable to log in");
