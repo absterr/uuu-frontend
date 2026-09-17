@@ -60,3 +60,45 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: color-mix(in oklch, var(--foreground) 35%, transparent);
 }
+
+/* xyflow Modifications */
+
+.codemap-flow {
+  --xy-background-color: var(--background);
+  --xy-node-background-color-default: var(--background);
+  --xy-node-border-default: 1px solid
+    color-mix(in oklch, var(--foreground) 12%, transparent);
+  --xy-node-border-radius-default: 0;
+  --xy-node-boxshadow-default: 0 2px 8px
+    color-mix(in oklch, var(--foreground) 8%, transparent);
+  --xy-handle-background-color-default: var(--background);
+  --xy-handle-border-color-default: var(--plum);
+  --xy-controls-button-background-color-default: var(--background);
+  --xy-controls-button-background-color-hover-default: color-mix(
+    in oklch,
+    var(--foreground) 5%,
+    var(--background)
+  );
+  --xy-controls-button-border-color-default: color-mix(
+    in oklch,
+    var(--foreground) 10%,
+    transparent
+  );
+  --xy-controls-box-shadow-default: 0 2px 8px
+    color-mix(in oklch, var(--foreground) 8%, transparent);
+  --xy-theme-selected: var(--plum);
+}
+
+.codemap-flow .react-flow__controls,
+.codemap-flow .react-flow__controls-button {
+  border-radius: 0;
+}
+
+.codemap-flow .react-flow__controls-button {
+  color: var(--foreground);
+}
+
+.codemap-flow .react-flow__edge-path {
+  stroke: color-mix(in oklch, var(--foreground) 35%, transparent);
+  stroke-width: 1.5;
+}
