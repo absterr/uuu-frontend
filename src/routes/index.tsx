@@ -1,5 +1,5 @@
-import AppIcon from "@/components/icons/AppIcon";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import AppIcon from "@/components/icons/AppIcon";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
